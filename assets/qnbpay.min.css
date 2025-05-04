@@ -1,0 +1,73 @@
+/* QNBPay CSS */
+.wc-credit-card-form-card-number {
+    background-repeat: no-repeat;
+    background-position: right 0.5em center;
+    background-size: auto 1.5em;
+}
+
+.wc-credit-card-form-card-number.visa {
+    background-image: url(img/visa.svg);
+}
+
+.wc-credit-card-form-card-number.mastercard {
+    background-image: url(img/mastercard.svg);
+}
+
+.wc-credit-card-form-card-number.amex {
+    background-image: url(img/amex.svg);
+}
+
+.wc-credit-card-form-card-number.discover {
+    background-image: url(img/discover.svg);
+}
+
+.wc-credit-card-form-card-number.dinersclub {
+    /* Changed from dinersclub to diners */
+    background-image: url(img/diners.svg);
+}
+
+.wc-credit-card-form-card-number.maestro {
+    background-image: url(img/maestro.svg);
+}
+
+.wc-credit-card-form-card-number.jcb {
+    background-image: url(img/jcb.svg);
+}
+
+.wc-credit-card-form-card-number.unionpay {
+    /* Added UnionPay */
+    background-image: url(img/unionpay.svg);
+}
+
+.qnypay-installments {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-top: 1rem;
+    border-top: 1px solid #ebebeb;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.qnypay-installments-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    padding-bottom: .4rem;
+}
+
+.qnypay-installments-row {
+    display: flex;
+    align-items: center;
+    padding: 0 .2rem 0 0;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.qnypay-installments-row input[type="radio"]:checked+label {
+    font-weight: 600;
+}
+
+.qnypay-installments-row input[type="radio"]:checked {
+    accent-color: #008000;
+}

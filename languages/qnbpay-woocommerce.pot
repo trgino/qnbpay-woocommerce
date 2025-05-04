@@ -1,0 +1,529 @@
+# Copyright (C) 2025 Cüneyt Çil
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: QNBPay Payment Gateway for WooCommerce 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qnbpay-woocommerce\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2025-05-04T16:28:23+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: qnbpay-woocommerce\n"
+
+#. Plugin Name of the plugin
+#: index.php
+#: includes/QNBPay_Gateway.php:466
+msgid "QNBPay Payment Gateway for WooCommerce"
+msgstr ""
+
+#. Description of the plugin
+#: index.php
+msgid "QNBPay Payment gateway for woocommerce"
+msgstr ""
+
+
+#: includes/QNBPay_Ajax.php:112
+#: includes/QNBPay_Ajax.php:218
+#: includes/QNBPay_Ajax.php:343
+#: includes/QNBPay_Ajax.php:641
+#: includes/QNBPay_Ajax.php:685
+msgid "Invalid nonce"
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:122
+msgid "Credit card number is required."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:129
+msgid "Credit card number is invalid."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:172
+#: includes/QNBPay_Ajax.php:182
+#: includes/QNBPay_Ajax.php:658
+#: includes/QNBPay_Ajax.php:703
+#: includes/QNBPay_Core.php:637
+#: includes/QNBPay_Gateway.php:428
+#: includes/QNBPay_Gateway.php:637
+msgid "Success"
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:226
+msgid "Order ID is required."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:233
+msgid "Order not found."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:275
+#: includes/QNBPay_Core.php:290
+msgid "Payment completed via QNBPay."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:281
+#: includes/QNBPay_Core.php:297
+#: includes/QNBPay_Gateway.php:1102
+msgid "Your order has been paid successfully."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:296
+#: includes/QNBPay_Core.php:304
+msgid "Payment has not been confirmed."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:312
+msgid "Check result not found. Trying again."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:378
+msgid "The test function can be performed after saving the merchant information."
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:518
+msgid "Installment Selection"
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:528
+msgid "Payment In Advence"
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:528
+msgid "%d installments"
+msgstr ""
+
+#: includes/QNBPay_Ajax.php:637
+#: includes/QNBPay_Ajax.php:681
+#: includes/QNBPay_Gateway.php:432
+#: includes/QNBPay_Gateway.php:641
+msgid "Cant find debug file"
+msgstr ""
+
+#: includes/QNBPay_Core.php:225
+msgid "Payment for your order has been rejected by the payment broker."
+msgstr ""
+
+#: includes/QNBPay_Core.php:238
+msgid "Order identifier not found."
+msgstr ""
+
+#: includes/QNBPay_Core.php:317
+msgid "Your payment is being processed. Please wait..."
+msgstr ""
+
+#: includes/QNBPay_Core.php:398
+#: includes/QNBPay_Core.php:473
+#: includes/QNBPay_Core.php:604
+msgid "Unexpected error occurred."
+msgstr ""
+
+#: includes/QNBPay_Core.php:406
+#: includes/QNBPay_Core.php:482
+msgid "Cant get token from payment agent."
+msgstr ""
+
+#: includes/QNBPay_Core.php:452
+#: includes/QNBPay_Core.php:524
+#: includes/QNBPay_Core.php:640
+msgid "Cant get any results from payment agent."
+msgstr ""
+
+#: includes/QNBPay_Core.php:632
+msgid "Cant connect to payment agent."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:87
+msgid "QNBPay WooCommerce Gateway"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:229
+#: includes/QNBPay_Gateway.php:279
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:230
+msgid "Enable QNBPay Gateway?"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:236
+msgid "Title"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:238
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:239
+msgid "Credit Card"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:243
+msgid "Description"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:245
+msgid "This controls the description which the user sees during checkout."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:246
+msgid "Pay with your credit card via our super-cool payment gateway."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:252
+msgid "Merchant Key"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:256
+msgid "Merchant ID"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:260
+msgid "App Key"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:264
+msgid "App Secret"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:271
+msgid "Sale Webhook Key"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:273
+msgid "Enter the key you defined in the QNBPay merchant panel for webhook notifications. This is required to receive webhook updates. The webhook URL to enter in the panel is: "
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:280
+msgid "Enable Test Mode?"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:282
+msgid "Place the payment gateway in test mode using test API keys."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:290
+msgid "Enable 3D"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:291
+msgid "Enable 3d Payment?"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:300
+msgid "Installement"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:301
+msgid "Enable/Disable Installement ?"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:306
+#: includes/QNBPay_Gateway.php:307
+msgid "Limit Installement"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:310
+#: includes/QNBPay_Gateway.php:311
+#: includes/QNBPay_Gateway.php:312
+#: includes/QNBPay_Gateway.php:313
+#: includes/QNBPay_Gateway.php:314
+#: includes/QNBPay_Gateway.php:315
+#: includes/QNBPay_Gateway.php:316
+#: includes/QNBPay_Gateway.php:317
+#: includes/QNBPay_Gateway.php:318
+#: includes/QNBPay_Gateway.php:319
+#: includes/QNBPay_Gateway.php:320
+#: includes/QNBPay_Gateway.php:321
+#: includes/QNBPay_Init.php:172
+msgid "%s Installement"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:327
+msgid "Limit Installement By Product"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:328
+msgid "Enable/Disable Installement by Product ?"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:334
+msgid "Limit Installement By Cart Amount"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:335
+msgid "Enable/Disable Installement by Cart Amount ?"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:341
+msgid "Installement Minumum Cart Amount"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:342
+msgid "Those less than this basket amount will be collected in advance."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:349
+msgid "Order Prefix"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:351
+msgid "This field provides convenience for the separation of orders during reporting for the QNBPay module used in more than one site. (Optional)"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:355
+msgid "Order Status"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:357
+msgid "You can choose what the status of the order will be when your payments are successfully completed."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:365
+#: includes/QNBPay_Gateway.php:366
+msgid "Enable/Disable Debug Mode"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:386
+msgid "Order prefix is required."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:392
+msgid "Order prefix must contain only uppercase letters and numbers."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:398
+msgid "Sale webhook key must contain only letters and numbers."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:422
+msgid "Your transaction has been completed successfully. Within 2 seconds the page will be refreshed"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:423
+msgid "When you do this, all of the instalment data you have entered is deleted and the current ones from QNBPay servers are overwritten. The process cannot be reversed. To continue, please enter confirmation in the field below and continue the process. Otherwise, your transaction will not continue."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:425
+#: includes/QNBPay_Gateway.php:634
+msgid "Installment Rate Test"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:426
+#: includes/QNBPay_Gateway.php:635
+msgid "Bank Identification Test"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:427
+#: includes/QNBPay_Gateway.php:636
+msgid "Remote Connection Test"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:429
+#: includes/QNBPay_Gateway.php:638
+msgid "Failed"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:430
+#: includes/QNBPay_Gateway.php:639
+msgid "Download debug file"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:431
+#: includes/QNBPay_Gateway.php:640
+msgid "Clear debug file"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:449
+msgid "QNBPay Settings"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:458
+msgid "Test Informations"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:465
+msgid "QNBPay"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:467
+msgid "Visit Website"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:511
+#: includes/QNBPay_Gateway.php:518
+msgid "Name On Card"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:524
+msgid "Card Number"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:553
+msgid "Card Code"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:583
+msgid "TEST MODE ENABLED. In test mode, you can use the card numbers listed in <a href=\"https://qnbpay.com.tr/\">documentation</a>"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:658
+msgid "<strong>Card holder</strong> is required."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:663
+msgid "<strong>Card Number</strong> is required."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:668
+msgid "<strong>Card Expiry</strong> is required."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:672
+msgid "<strong>Card CVC</strong> is required."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:679
+msgid "<strong>Installment</strong> is required."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:713
+msgid "Could not start payment process."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:812
+msgid "Order Payment OrderId:%s - CustomOrderId:%s - InvoiceId:%s"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:1017
+msgid "Unknown error reported by webhook."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:1096
+msgid "Payment completed via QNBPay Webhook."
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:1110
+msgid "QNBPay status confirmed as Failed via checkstatus. Reason: %s"
+msgstr ""
+
+#: includes/QNBPay_Gateway.php:1111
+msgid "QNBPay payment failed confirmation via checkstatus. Transaction ID: %s. Reason: %s"
+msgstr ""
+
+#: includes/QNBPay_Init.php:89
+msgid "Website"
+msgstr ""
+
+#: includes/QNBPay_Init.php:90
+msgid "Report Issue"
+msgstr ""
+
+#: includes/QNBPay_Init.php:114
+msgid "Installment Limit"
+msgstr ""
+
+#: includes/QNBPay_Init.php:166
+msgid "Default"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:62
+#: includes/QNBPay_Transaction_History.php:146
+msgid "QNBPay Transaction History"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:63
+msgid "QNBPay Transactions"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:96
+msgid "Security check failed"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:151
+msgid "ID"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:152
+#: includes/QNBPay_Transaction_History.php:281
+msgid "Order ID"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:153
+#: includes/QNBPay_Transaction_History.php:285
+msgid "Action"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:155
+msgid "Customer ID"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:156
+msgid "Amount"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:157
+msgid "Result"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:158
+#: includes/QNBPay_Transaction_History.php:289
+msgid "Date"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:159
+msgid "Actions"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:166
+msgid "No transactions found."
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:191
+msgid "View"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:204
+msgid "%s item"
+msgid_plural "%s items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/QNBPay_Transaction_History.php:251
+msgid "Transaction not found"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:256
+msgid "Transaction Details"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:259
+msgid "Back to Transaction History"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:263
+msgid "View Order"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:271
+msgid "Field"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:272
+msgid "Value"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:277
+msgid "Log ID"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:293
+msgid "Data"
+msgstr ""
+
+#: includes/QNBPay_Transaction_History.php:310
+msgid "Details"
+msgstr ""

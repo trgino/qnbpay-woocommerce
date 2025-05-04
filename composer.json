@@ -1,0 +1,39 @@
+{
+    "name": "trgino/qnbpay-woocommerce",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "description": "QNBPay Payment Gateway for WooCommerce",
+    "keywords": [
+        "woocommerce",
+        "woocommerce-qnb",
+        "woocommerce-qnbpay",
+        "qnb",
+        "qnbpay",
+        "qnbpay-3d",
+        "qnbpay-sanalpos"
+    ],
+    "homepage": "https://qnbpay.com.tr/",
+    "authors": [
+        {
+            "name": "Cüneyt Çil",
+            "email": "trgino@trgino.com",
+            "homepage": "https://www.trgino.com/"
+        }
+    ],
+    "support": {
+        "email": "trgino@trgino.com"
+    },
+    "require": {
+        "php": ">=7.4",
+        "rappasoft/laravel-helpers": "^2.1"
+    },
+    "autoload": {
+        "files": [
+            "includes/QNBPay_Core.php",
+            "includes/QNBPay_Gateway.php",
+            "includes/QNBPay_Init.php",
+            "includes/QNBPay_Ajax.php",
+            "includes/QNBPay_Transaction_History.php"
+        ]
+    }
+}

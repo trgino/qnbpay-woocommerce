@@ -1,0 +1,163 @@
+/* QNBPay Admin CSS */
+.qnbpay-admin-interface {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.qnbpay-admin-interface .left {
+    flex: 2;
+    padding-right: 20px;
+}
+
+.qnbpay-admin-interface .right {
+    flex: 1;
+    padding-left: 20px;
+    border-left: 1px solid #ddd;
+}
+
+.qnbpay-admin-interface .qnbpay {
+    background-color: #f8f8f8;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.qnbpay-admin-interface .qnbpay h3 {
+    margin-top: 0;
+    color: #0073aa;
+}
+
+.qnbpay-admin-test-details {
+    margin: 20px 0;
+}
+
+.qnbpay-admin-test-details button {
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.qnbpay-admin-test-details button:hover {
+    background-color: #005177;
+}
+
+.qnbpay-admin-test-results {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    display: none;
+}
+
+.qnbpay-admin-test-results.active {
+    display: block;
+}
+
+.qnbpay-admin-test-results .test-item {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.qnbpay-admin-test-results .test-item:last-child {
+    border-bottom: none;
+}
+
+.qnbpay-admin-test-results .test-name {
+    font-weight: bold;
+}
+
+.qnbpay-admin-test-results .test-status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+.qnbpay-admin-test-results .test-status.success {
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+
+.qnbpay-admin-test-results .test-status.failed {
+    background-color: #f2dede;
+    color: #a94442;
+}
+
+#comission-rates {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#comission-rates td,
+#comission-rates th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#comission-rates tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#comission-rates tr:hover {
+    background-color: #ddd;
+}
+
+#comission-rates th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    background-color: #0073aa;
+    color: white;
+}
+
+.center-title {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.center-title h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.center-title button {
+    background-color: #0073aa;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.center-title button:hover {
+    background-color: #005177;
+}
+
+@media (max-width: 768px) {
+    .qnbpay-admin-interface {
+        flex-direction: column;
+    }
+
+    .qnbpay-admin-interface .left,
+    .qnbpay-admin-interface .right {
+        flex: 1 100%;
+        padding: 0;
+    }
+
+    .qnbpay-admin-interface .right {
+        border-left: none;
+        border-top: 1px solid #ddd;
+        margin-top: 20px;
+        padding-top: 20px;
+    }
+}
