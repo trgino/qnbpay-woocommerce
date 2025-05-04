@@ -125,9 +125,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
 
         add_action('woocommerce_thankyou', [$this, 'clear_cart_after_order']);
         add_action('before_woocommerce_pay', [$this, 'order_pay_notices']);
-
-        add_action('woocommerce_credit_card_form_start', [$this, 'test_mode_notice']);
-        add_action('woocommerce_credit_card_form_end', [$this, 'installment_table_holder']);
     }
 
     /**
@@ -569,40 +566,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
     }
 
     /**
-     * Display a notice on the checkout form if test mode is enabled.
-     * Hooks into woocommerce_credit_card_form_start.
-     *
-     * @since 1.0.0
-     * @param string $gatewayid The ID of the current payment gateway.
-     */
-    public function test_mode_notice($gatewayid)
-    {
-        if ($gatewayid == $this->id) {
-            if ($this->description) {
-                if ($this->testmode) {
-                    $this->description .= __('TEST MODE ENABLED. In test mode, you can use the card numbers listed in <a href="https://qnbpay.com.tr/">documentation</a>', 'qnbpay-woocommerce');
-                    $this->description = trim($this->description);
-                }
-                echo wpautop(wp_kses_post($this->description));
-            }
-        }
-    }
-
-    /**
-     * Output a placeholder div for the installment table on the checkout form.
-     * Hooks into woocommerce_credit_card_form_end.
-     *
-     * @since 1.0.0
-     * @param string $gatewayid The ID of the current payment gateway.
-     */
-    public function installment_table_holder($gatewayid)
-    {
-        if ($gatewayid == $this->id) {
-            echo '<div id="qnbpay-installment-table"></div>';
-        }
-    }
-
-    /**
      * Output the payment fields on the checkout page.
      *
      * @return void
@@ -610,11 +573,20 @@ class QNBPay_Gateway extends WC_Payment_Gateway
     public function payment_fields()
     {
         do_action('woocommerce_credit_card_form_start', $this->id);
+        if ($this->testmode) {
+            $testmode_notice = __('TEST MODE ENABLED. In test mode, you can use the card numbers listed in <a href="https://qnbpay.com.tr/">documentation</a>', 'qnbpay-woocommerce');
+            $this->description = $this->description . '<br>' . $testmode_notice;
+        }
+
+        if (!empty($this->description)) {
+            echo wpautop(wp_kses_post($this->description));
+        }
 
         $cc_form = new WC_Payment_Gateway_CC();
         $cc_form->id = $this->id;
         $cc_form->supports = $this->supports;
         $cc_form->form();
+        echo '<div id="qnbpay-installment-table"></div>';
 
         do_action('woocommerce_credit_card_form_end', $this->id);
     }
