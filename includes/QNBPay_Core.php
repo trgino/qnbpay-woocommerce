@@ -725,8 +725,7 @@ class QNBPay_Core
     {
         if (isset($_SERVER['HTTP_CF_CONNECTING_IP']) && filter_var($_SERVER['HTTP_CF_CONNECTING_IP'], FILTER_VALIDATE_IP)) {
             $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
-            $_SERVER['HTTP_CLIENT_IP'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
-            $_SERVER['HTTP_X_FORWARDED_FOR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+            return $_SERVER['HTTP_CF_CONNECTING_IP'];
         }
 
         if (isset($_SERVER['HTTP_CLIENT_IP'])) {
@@ -734,20 +733,22 @@ class QNBPay_Core
                 $ips = explode(',', $_SERVER['HTTP_CLIENT_IP']);
                 $ip = current($ips);
                 if (filter_var($ip, FILTER_VALIDATE_IP)) {
-                    $_SERVER['REMOTE_ADDR'] = $ip;
+                    return $ip;
                 }
             } elseif (filter_var($_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP)) {
-                $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CLIENT_IP'];
+                return $_SERVER['HTTP_CLIENT_IP'];
             }
-        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        }
+
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             if (strpos($_SERVER['HTTP_X_FORWARDED_FOR'], ',') !== false) {
                 $ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
                 $ip = current($ips);
                 if (filter_var($ip, FILTER_VALIDATE_IP)) {
-                    $_SERVER['REMOTE_ADDR'] = $ip;
+                    return $ip;
                 }
             } elseif (filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP)) {
-                $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+                return $_SERVER['HTTP_X_FORWARDED_FOR'];
             }
         }
 
