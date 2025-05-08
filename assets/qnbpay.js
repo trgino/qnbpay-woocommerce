@@ -4,15 +4,15 @@
 
 jQuery(document).ready(function ($) {
 
-    if ($('.woocomerce-message[data-qnypayrecheck]').length) {
+    if ($('.woocomerce-message[data-qnbpayrecheck]').length) {
         $.post(qnbpay_ajax.ajax_url, {
             action: 'qnbpay_ajax',
             method: 'recheckpayment',
             nonce: qnbpay_ajax.nonce,
-            orderid: $('.woocomerce-message[data-qnypayrecheck]').data('orderid'),
+            orderid: $('.woocomerce-message[data-qnbpayrecheck]').data('orderid'),
         }, function (response) {
             if (response.status === true) {
-                $('.woocomerce-message[data-qnypayrecheck]').html(data.msg);
+                $('.woocomerce-message[data-qnbpayrecheck]').html(data.msg);
                 if (response.url === true) {
                     window.location.href = response.url;
                 }
@@ -20,7 +20,7 @@ jQuery(document).ready(function ($) {
                 if (response.retry === true) {
                     window.location.reload(true);
                 } else {
-                    $('.woocomerce-message[data-qnypayrecheck]').html(data.msg);
+                    $('.woocomerce-message[data-qnbpayrecheck]').html(data.msg);
                 }
             }
         }, 'json');
@@ -70,6 +70,6 @@ jQuery(document).ready(function ($) {
                     $('#qnbpay-installment-table').html(response.html);
                 }
             }, 'json');
-        }, 500);
+        }, 100);
     }
 });

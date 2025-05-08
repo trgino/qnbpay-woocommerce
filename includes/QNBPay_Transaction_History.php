@@ -151,10 +151,6 @@ class QNBPay_Transaction_History
                         <th><?php echo esc_html__('ID', 'qnbpay-woocommerce'); ?></th>
                         <th><?php echo esc_html__('Order ID', 'qnbpay-woocommerce'); ?></th> <!-- Link to WC Order -->
                         <th><?php echo esc_html__('Action', 'qnbpay-woocommerce'); ?></th> <!-- Logged Action -->
-                        <!-- Remove Customer ID, Amount, Result as they are not in qnbpay_orders -->
-                        <!-- <th><?php echo esc_html__('Customer ID', 'qnbpay-woocommerce'); ?></th> -->
-                        <!-- <th><?php echo esc_html__('Amount', 'qnbpay-woocommerce'); ?></th> -->
-                        <!-- <th><?php echo esc_html__('Result', 'qnbpay-woocommerce'); ?></th> -->
                         <th><?php echo esc_html__('Date', 'qnbpay-woocommerce'); ?></th>
                         <th><?php echo esc_html__('Actions', 'qnbpay-woocommerce'); ?></th>
                     </tr>
@@ -163,7 +159,7 @@ class QNBPay_Transaction_History
                     <?php if (empty($transactions)): ?>
                         <?php // Display message if no transactions found?>
                         <tr>
-                            <td colspan="8"><?php echo esc_html__('No transactions found.', 'qnbpay-woocommerce'); ?></td>
+                            <td colspan="5"><?php echo esc_html__('No transactions found.', 'qnbpay-woocommerce'); ?></td>
                         </tr>
                     <?php else: ?>
                         <?php foreach ($transactions as $transaction): ?>
@@ -215,7 +211,7 @@ class QNBPay_Transaction_History
             'current' => $page,
         ]);
 
-                ?>
+        ?>
                         </span>
                     </div>
                 </div>
@@ -329,7 +325,7 @@ class QNBPay_Transaction_History
         </div>
         <?php // --- End Display Details ---?>
         <?php
-    }
+}
 
     /**
      * Recursively print an array as an unordered list.

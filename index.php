@@ -4,7 +4,7 @@
  * Plugin Name: QNBPay Payment Gateway for WooCommerce
  * Plugin URI: https://github.com/trgino/qnbpay-woocommerce
  * Description: QNBPay Payment gateway for woocommerce
- * Version: 1.0.2
+ * Version: 1.0.4
  * Author: Cüneyt Çil
  * Author URI: https://trgino.com/
  * License: GPLv2 or later
@@ -17,7 +17,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('QNBPAY_VERSION', '1.0.2');
+define('QNBPAY_VERSION', '1.0.4');
 define('QNBPAY_FILE', __FILE__);
 define('QNBPAY_BASENAME', plugin_basename(QNBPAY_FILE));
 define('QNBPAY_DIR', plugin_dir_path(QNBPAY_FILE));
@@ -63,11 +63,13 @@ function onQNBPayActivation()
     $createTableQuery['qnbpay_orders'] = 'CREATE TABLE ' . $tableNames['qnbpay_orders'] . ' (
     id BIGINT(20) NOT NULL AUTO_INCREMENT,
     orderid BIGINT(20) NOT NULL,
+    invoiceid varchar(50),
     createdate DATETIME NOT NULL,
     action VARCHAR(50) NOT NULL,
     data LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
     details LONGTEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NULL,
     PRIMARY KEY (id),
+    KEY idx_invoiceid (invoiceid),
     KEY idx_orderid (orderid)
     ) ENGINE=InnoDB ' . $charsetCollate . ';';
 
@@ -75,11 +77,9 @@ function onQNBPayActivation()
     $createTableQuery['qnbpay_orders_ids'] = 'CREATE TABLE ' . $tableNames['qnbpay_orders_ids'] . ' (
     id BIGINT(20) NOT NULL AUTO_INCREMENT,
     orderid BIGINT(20) NOT NULL,
-    customorderid BIGINT(20) NOT NULL UNIQUE,
-    invoiceid VARCHAR(255) NOT NULL,
+    invoiceid varchar(50) NOT NULL UNIQUE,
     createdate DATETIME NOT NULL,
     PRIMARY KEY (id),
-    KEY idx_customorderid (customorderid),
     KEY idx_invoiceid (invoiceid),
     KEY idx_orderid (orderid),
     KEY idx_createdate (createdate)

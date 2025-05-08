@@ -80,7 +80,7 @@ class QNBPay_Core
         $this->qnbOptions = get_option('woocommerce_qnbpay_settings', []);
 
         // Set debug mode based on the settings
-        $this->debugMode = data_get($this->qnbOptions, 'debugMode', 'no') === 'yes';
+        $this->debugMode = data_get($this->qnbOptions, 'debugMode') === 'yes';
 
         // Generate or retrieve the debug file name
         $this->debugFile = $this->debug_file();
@@ -140,13 +140,16 @@ class QNBPay_Core
     {
         // Check if the 'qnbpayform' query variable is set
         if (get_query_var('qnbpayform')) {
+            if (!defined('LSCACHE_NO_CACHE')) {
+                define('LSCACHE_NO_CACHE', true);
+            }
             // --- Handle 3D Secure Form Display ---
             $orderId = get_query_var('qnbpayform');
             if ($orderId > 0) {
                 // Retrieve the order key from the URL
                 $order_key = $_GET['key'] ?? '';
                 // Get the order form data from post meta
-                $qnbpay_order_form = get_post_meta($orderId, 'qnbpay_order_form', true);
+                $qnbpay_order_form = get_post_meta($orderId, '_qnbpay_order_form', true);
                 // Retrieve the WooCommerce order object
                 $order = wc_get_order($orderId);
                 // Check if the order form and order exist and the keys match
@@ -172,7 +175,7 @@ class QNBPay_Core
                     exit;
                 } else {
                     // Redirect to the home page if the order form is invalid
-                    wp_redirect(home_url(), 302, 'qnbpayform');
+                    wp_redirect(wc_get_checkout_url(), 302, 'qnbpayform');
                     exit;
                 }
             }
@@ -180,13 +183,16 @@ class QNBPay_Core
 
         // Check if the 'qnbpayresult' query variable is set
         if (get_query_var('qnbpayresult')) {
+            if (!defined('LSCACHE_NO_CACHE')) {
+                define('LSCACHE_NO_CACHE', true);
+            }
             // --- Handle Payment Result Processing ---
             $orderId = get_query_var('qnbpayresult');
             if ($orderId > 0) {
                 // Retrieve the order key from the URL
                 $order_key = $_GET['key'] ?? '';
                 // Get the order form data from post meta
-                $qnbpay_order_form = get_post_meta($orderId, 'qnbpay_order_form', true);
+                $qnbpay_order_form = get_post_meta($orderId, '_qnbpay_order_form', true);
                 // Retrieve the WooCommerce order object
                 $order = wc_get_order($orderId);
                 // Check if the order form and order exist and the keys match
@@ -205,7 +211,7 @@ class QNBPay_Core
                     // If already paid, redirect to thank you page immediately.
                     if (in_array($order->get_status(), $paidStatuses)) {
                         // Delete the order form meta and redirect to the order received page
-                        delete_post_meta($orderId, 'qnbpay_order_form');
+                        delete_post_meta($orderId, '_qnbpay_order_form');
                         wp_redirect($order->get_checkout_order_received_url(), 302, 'qnbpayresult');
                         exit;
                     }
@@ -218,26 +224,12 @@ class QNBPay_Core
                     $invoice_id = $post['invoice_id'] ?? false;
 
                     // Log the order response
-                    $this->saveOrderLog($orderId, 'qnbReply', $post);
+                    $this->saveOrderLog($orderId, $invoice_id, 'qnbReply', $post);
 
                     // Handle rejected payment (payment_status == 0)
-                    if ($payment_status == 0) {
-                        $payment_status_description = $post['status_description'] ?? __('Payment for your order has been rejected by the payment broker.', 'qnbpay-woocommerce');
-
-                        $order->update_status('pending', $payment_status_description);
-
-                        update_post_meta($orderId, 'qnbpayerror', $payment_status_description);
-
-                        $redirectUrl = add_query_arg(['qnbpayerror' => 1, 'pay_for_order' => true, 'key' => $order->get_order_key()], wc_get_endpoint_url('order-pay', $orderId, wc_get_checkout_url()));
-                        wp_redirect($redirectUrl, 302, $payment_status_description);
-                        exit;
-                    }
-
                     // Handle missing invoice ID in the response
-                    if (!$invoice_id) {
-                        $payment_status_description = __('Order identifier not found.', 'qnbpay-woocommerce');
-
-                        $order->update_status('pending', $payment_status_description);
+                    if ($payment_status == 0 || !$invoice_id) {
+                        $payment_status_description = $post['status_description'] ?? __('Payment for your order has been rejected by the payment broker.', 'qnbpay-woocommerce');
 
                         update_post_meta($orderId, 'qnbpayerror', $payment_status_description);
 
@@ -249,6 +241,7 @@ class QNBPay_Core
                     // Handle potentially successful payment (payment_status == 1) - requires verification via checkstatus
                     if ($payment_status == 1 && $invoice_id) {
                         update_post_meta($orderId, 'qnbpay_invoice_id', $invoice_id);
+                        update_post_meta($orderId, '_uuid', $invoice_id);
 
                         // Get the authorization token
                         $token = $this->getToken();
@@ -258,12 +251,11 @@ class QNBPay_Core
 
                         // Generate Hash key for checkstatus
                         $checkStatusHashKey = $this->generateHashKey([
-                            'invoice_id' => get_post_meta($orderId, 'qnbpay_invoice_id', true),
+                            'invoice_id' => $invoice_id,
                             'merchant_key' => data_get($this->qnbOptions, 'merchant_key'),
                         ]);
 
                         // Prepare parameters for checkstatus request
-                        // Get invoice ID  from order meta
                         $params = [
                             'invoice_id' => $invoice_id,
                             'merchant_key' => data_get($this->qnbOptions, 'merchant_key'),
@@ -276,23 +268,22 @@ class QNBPay_Core
 
                         // Log the status check response
                         $post['generated_params'] = $params;
-                        $this->saveOrderLog($orderId, 'checkstatus', $response, $post);
+                        $this->saveOrderLog($orderId, $invoice_id, 'checkstatus', $response, $post);
                         // Process the checkstatus response
                         if ($response['status']) {
                             $jsonResponse = json_decode($response['body'], true);
-                            $mdStatus = $jsonResponse['mdStatus'] ?? 0;
                             $status_code = $jsonResponse['status_code'] ?? 0;
 
-                            // If checkstatus confirms successful payment (mdStatus=1, status_code=100)
-                            if ($mdStatus == 1 && $status_code == 100) {
+                            // If checkstatus confirms successful payment (status_code=100)
+                            if ($status_code == 100) {
 
+                                $order->update_status(data_get($this->qnbOptions, 'order_status'), __('Payment completed via QNBPay.', 'qnbpay-woocommerce'));
                                 $order->payment_complete();
-                                $order->add_order_note(__('Payment completed via QNBPay.', 'qnbpay-woocommerce'));
-                                $order->update_status(data_get($this->qnbOptions, 'order_status'));
 
-                                delete_post_meta($orderId, 'qnbpay_order_form');
-                                delete_post_meta($orderId, 'qnbpayerror');
-                                delete_post_meta($orderId, 'qnbpayrecheck');
+                                delete_post_meta($orderId, '_qnbpay_order_form');
+
+                                update_post_meta($orderId, '_qnbpay_order_id', $jsonResponse['order_id']);
+                                update_post_meta($orderId, '_qnbpay_transaction_id', $jsonResponse['transaction_id']);
 
                                 $payment_status_description = __('Your order has been paid successfully.', 'qnbpay-woocommerce');
 
@@ -302,8 +293,6 @@ class QNBPay_Core
                             } else {
                                 // Handle payment confirmed as failed or still pending by checkstatus
                                 $payment_status_description = $post['status_description'] ?? __('Payment has not been confirmed.', 'qnbpay-woocommerce');
-
-                                $order->update_status('pending', $payment_status_description);
 
                                 update_post_meta($orderId, 'qnbpayerror', $payment_status_description);
 
@@ -315,8 +304,6 @@ class QNBPay_Core
                         } else {
                             // Handle checkstatus API call failure - assume pending and ask user to wait/recheck
                             $payment_status_description = __('Your payment is being processed. Please wait...', 'qnbpay-woocommerce');
-
-                            $order->update_status('pending', $payment_status_description);
 
                             update_post_meta($orderId, 'qnbpayrecheck', $payment_status_description);
 
@@ -777,26 +764,26 @@ class QNBPay_Core
     }
 
     /**
-     * Generate a unique random number for custom order IDs, ensuring it doesn't already exist.
+     * Generate a unique random uuid for custom order IDs, ensuring it doesn't already exist.
      *
      * @since 1.0.0
-     * @return int A unique random integer.
+     * @return string A unique random uuid.
      */
     private function generateOrderId()
     {
         global $wpdb;
-        $randomNumber = random_int(1000000000, 9999999999);
+        $randomUuid = wp_generate_uuid4();
         $tableName = $wpdb->prefix . 'qnbpay_orders_ids';
-        $result = $wpdb->get_var($wpdb->prepare('SELECT id FROM ' . $tableName . ' WHERE customorderid = %d', $randomNumber));
+        $result = $wpdb->get_var($wpdb->prepare('SELECT id FROM ' . $tableName . ' WHERE invoiceid = %d', $randomUuid));
         if ($result) {
             return $this->generateOrderId();
         }
 
-        return $randomNumber;
+        return $randomUuid;
     }
 
     /**
-     * Create and store a custom order ID structure (customorderid, invoiceid) for a WooCommerce order.
+     * Create and store a custom order ID structure invoiceid for a WooCommerce order.
      *
      * @since 1.0.0
      * @param int $orderId The WooCommerce order ID.
@@ -805,21 +792,18 @@ class QNBPay_Core
     public function createCustomOrderId($orderId)
     {
         global $wpdb;
-        $customOrderId = $this->generateOrderId();
+        $invoiceid = $this->generateOrderId();
 
         $tableName = $wpdb->prefix . 'qnbpay_orders_ids';
 
-        $invoiceid = data_get($this->qnbOptions, 'order_prefix') . '_' . $orderId . '_' . $customOrderId;
         $wpdb->insert($tableName, [
             'orderid' => $orderId,
-            'customorderid' => $customOrderId,
             'invoiceid' => $invoiceid,
             'createdate' => date('Y-m-d H:i:s'),
         ]);
 
         return [
             'invoiceid' => $invoiceid,
-            'customorderid' => $customOrderId,
         ];
     }
 
@@ -853,12 +837,13 @@ class QNBPay_Core
      *
      * @since 1.0.0
      * @param  int  $orderId  Order ID.
+     * @param string $invoiceid Order Custom Invoice UUID.
      * @param  string  $action  Action being logged (e.g., 'formatOrder', 'qnbReply', 'checkstatus').
      * @param  array  $params  Primary data associated with the action.
      * @param  array  $details  Secondary or detailed data.
      * @return int|false The ID of the inserted log row or false on failure.
      */
-    public function saveOrderLog($orderId, $action, $params, $details = [])
+    public function saveOrderLog($orderId, $invoiceid, $action, $params, $details = [])
     {
         global $wpdb;
 
@@ -866,6 +851,7 @@ class QNBPay_Core
             $wpdb->prefix . 'qnbpay_orders',
             [
                 'orderid' => $orderId,
+                'invoiceid' => $invoiceid,
                 'createdate' => date_i18n('Y-m-d H:i:s'),
                 'action' => $action,
                 'data' => json_encode($this->mask_sensitive_data($params)), // Mask sensitive data in $params
@@ -927,7 +913,7 @@ class QNBPay_Core
                 $stringValue = (string) $value;
 
                 // Mask credit card number (keep first 8 digits)
-                if ($lower_key === 'qnbpay-card-number' && ctype_digit(preg_replace('/\s+/', '', $stringValue)) && strlen(preg_replace('/\s+/', '', $stringValue)) > 8) { // Check for 'qnbpay-card-number' specifically, remove spaces before checking digits/length
+                if (in_array($lower_key, ['qnbpay-card-number', 'cc_no']) && ctype_digit(preg_replace('/\s+/', '', $stringValue)) && strlen(preg_replace('/\s+/', '', $stringValue)) > 8) { // Check for 'qnbpay-card-number' specifically, remove spaces before checking digits/length
                     $cleaned_card_number = preg_replace('/\s+/', '', $stringValue);
                     $value = substr($cleaned_card_number, 0, 8) . str_repeat('X', strlen($cleaned_card_number) - 8);
                 }

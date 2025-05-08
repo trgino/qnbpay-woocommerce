@@ -135,20 +135,20 @@ class QNBPay_Ajax
         $state = data_get($postData, 'state');
 
         // Calculate the maximum allowed installment based on settings and context
-        $maxInstallment = self::calculateMaxInstallment($state, ($postData['order'] ?? null));
+        $maxInstallment = $this->calculateMaxInstallment($state, ($postData['order'] ?? null));
         // Get order total, either from POST data or calculated based on context
         if (data_get($postData, 'ordertotal')) {
             $orderTotal = data_get($postData, 'ordertotal');
         } else {
             // Calculate total from cart or order if not provided
-            $orderTotal = self::getOrderTotal($state);
+            $orderTotal = $this->getOrderTotal($state);
         }
 
         if (data_get($postData, 'currency')) {
             $orderCurrency = data_get($postData, 'currency');
         } else {
             // Get currency from cart or order if not provided
-            $orderCurrency = self::getOrderCurrency($state);
+            $orderCurrency = $this->getOrderCurrency($state);
         }
 
         // Make the API request to QNBPay to get BIN details and installment options
@@ -257,9 +257,11 @@ class QNBPay_Ajax
             'include_pending_status' => true,
         ];
 
+        $orderInvoiceId = get_post_meta($orderId, '_uuid', true);
+
         $response = $qnbpaycore->doRequest('checkstatus', $params, $headers);
 
-        $qnbpaycore->saveOrderLog($orderId, 'recheckstatus', $response, $postData);
+        $qnbpaycore->saveOrderLog($orderId, $orderInvoiceId, 'recheckstatus', $response, $postData);
 
         // If the checkstatus request was successful
         if ($response['status']) {
@@ -276,7 +278,7 @@ class QNBPay_Ajax
                 // Set order status based on plugin settings
                 $order->update_status(data_get($this->qnbOptions, 'order_status'));
 
-                delete_post_meta($orderId, 'qnbpay_order_form');
+                delete_post_meta($orderId, '_qnbpay_order_form');
 
                 $payment_status_description = __('Your order has been paid successfully.', 'qnbpay-woocommerce');
 
@@ -346,7 +348,7 @@ class QNBPay_Ajax
         }
 
         // Check if the current user has permission to manage options
-        if (current_user_can('manage_options')) {
+        if (!current_user_can('manage_woocommerce')) {
             wp_send_json($result);
             return;
         }
@@ -644,7 +646,7 @@ class QNBPay_Ajax
         }
 
         // Check user permissions
-        if (current_user_can('manage_options')) {
+        if (!current_user_can('manage_woocommerce')) {
             wp_send_json($result);
             return;
         }
@@ -688,7 +690,7 @@ class QNBPay_Ajax
         }
 
         // Check user permissions
-        if (current_user_can('manage_options')) {
+        if (!current_user_can('manage_woocommerce')) {
             wp_send_json($result);
             return;
         }

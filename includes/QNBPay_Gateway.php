@@ -10,6 +10,19 @@
 class QNBPay_Gateway extends WC_Payment_Gateway
 {
     /**
+     * Whether the gateway id.
+     *
+     * @var string
+     */
+    public $id;
+
+    /**
+     * Whether the gateway is enabled.
+     *
+     * @var bool
+     */
+    public $enabled;
+    /**
      * Whether the gateway is in test mode.
      *
      * @var bool
@@ -42,9 +55,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
     /** @var string App Secret from QNBPay. */
     public $app_secret;
 
-    /** @var string Prefix for order IDs sent to QNBPay. */
-    public $order_prefix;
-
     /** @var string WooCommerce order status after successful payment. */
     public $order_status;
 
@@ -65,9 +75,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
 
     /** @var array Range of possible installment numbers. */
     public $maxInstallment;
-
-    /** @var array Information about the current logged-in user. */
-    public $userInformation;
 
     /** @var string Webhook Key for sale notifications from QNBPay. */
     public $sale_web_hook_key;
@@ -102,7 +109,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
         $this->merchant_id = $this->get_option('merchant_id');
         $this->app_key = $this->get_option('app_key');
         $this->app_secret = $this->get_option('app_secret');
-        $this->order_prefix = $this->get_option('order_prefix');
         $this->order_status = $this->get_option('order_status');
         $this->limitInstallment = $this->get_option('limitInstallment', 12);
         $this->limitInstallmentByProduct = $this->get_option('limitInstallmentByProduct', 'no') === 'yes';
@@ -112,7 +118,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
         $this->maxInstallment = range(1, 12);
         // Initialize the new setting
         $this->sale_web_hook_key = $this->get_option('sale_web_hook_key');
-        $this->userInformation = self::getUserInformationData();
 
         add_action('woocommerce_update_options_payment_gateways_' . $this->id, [$this, 'process_admin_options']);
         add_action('wp_enqueue_scripts', [$this, 'payment_scripts']);
@@ -123,7 +128,7 @@ class QNBPay_Gateway extends WC_Payment_Gateway
 
         add_action('woocommerce_api_wc_gateway_' . $this->id, [$this, 'handle_webhook']);
 
-        add_action('woocommerce_thankyou', [$this, 'clear_cart_after_order']);
+        add_action('woocommerce_thankyou_' . $this->id, [$this, 'clear_cart_after_order']);
         add_action('before_woocommerce_pay', [$this, 'order_pay_notices']);
     }
 
@@ -152,33 +157,40 @@ class QNBPay_Gateway extends WC_Payment_Gateway
      */
     public function order_pay_notices()
     {
+        if (!$this->enabled) {
+            return;
+        }
+
         if (is_wc_endpoint_url('order-pay')) {
-            $order_id = intval(get_query_var('order-pay', 0));
-            if ($order_id > 0) {
-                $order = wc_get_order($order_id);
+            $orderId = intval(get_query_var('order-pay', 0));
+            if ($orderId > 0) {
+                $order = wc_get_order($orderId);
                 if (!$order) {
                     return;
                 }
                 // Check for payment error notice flag in URL
                 $qnbpayerror = $_GET['qnbpayerror'] ?? 0;
-                $qnbpayerror = $qnbpayerror == 1 ? get_post_meta($order_id, 'qnbpayerror', true) : false;
+                $qnbpayerror = $qnbpayerror == 1 ? get_post_meta($orderId, 'qnbpayerror', true) : false;
 
                 // Check for payment recheck notice flag in URL
                 $qnbpayrecheck = $_GET['qnbpayrecheck'] ?? 0;
-                $qnbpayrecheck = $qnbpayrecheck == 1 ? get_post_meta($order_id, 'qnbpayrecheck', true) : false;
+                $qnbpayrecheck = $qnbpayrecheck == 1 ? get_post_meta($orderId, 'qnbpayrecheck', true) : false;
 
                 // Display notices only if the order is pending
                 if ($order && $order->get_status() === 'pending') {
                     if ($qnbpayerror) {
                         wc_print_notice($qnbpayerror, 'error');
-                        delete_post_meta($order_id, 'qnbpayerror');
+
+                        $orderinvoiceid = get_post_meta($orderId, '_uuid', true);
+                        delete_post_meta($orderId, 'qnbpayerror');
+                        do_action('qnbpay_woocommerce_transaction_error', $orderId, $qnbpayerror, $orderinvoiceid);
                     }
                     if ($qnbpayrecheck) {
                         wc_print_notice($qnbpayerror, 'notice', [
                             'qnbpayrecheck' => 1,
-                            'orderid' => $order_id,
+                            'orderid' => $orderId,
                         ]);
-                        delete_post_meta($order_id, 'qnbpayrecheck');
+                        delete_post_meta($orderId, 'qnbpayrecheck');
                     }
 
                     return;
@@ -193,8 +205,10 @@ class QNBPay_Gateway extends WC_Payment_Gateway
      *
      * @return void
      */
-    public function clear_cart_after_order()
+    public function clear_cart_after_order($orderId)
     {
+        do_action('qnbpay_woocommerce_transaction_success', $orderId);
+
         if (WC()->cart) {
             WC()->cart->empty_cart();
         }
@@ -342,12 +356,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
             'qnbhr5' => [
                 'type' => 'qnbhr',
             ],
-            'order_prefix' => [
-                'title' => __('Order Prefix', 'qnbpay-woocommerce'),
-                'type' => 'text',
-                'description' => __('This field provides convenience for the separation of orders during reporting for the QNBPay module used in more than one site. (Optional)', 'qnbpay-woocommerce'),
-                'default' => self::generateDefaultOrderPrefix(),
-            ],
             'order_status' => [
                 'title' => __('Order Status', 'qnbpay-woocommerce'),
                 'type' => 'select',
@@ -370,7 +378,7 @@ class QNBPay_Gateway extends WC_Payment_Gateway
 
     /**
      * Process and validate admin options.
-     * Adds custom validation for order_prefix and sale_web_hook_key.
+     * Adds custom validation for sale_web_hook_key.
      *
      * @since 1.0.0
      * @return bool Whether the options were saved successfully.
@@ -378,17 +386,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
     public function process_admin_options()
     {
         $post_data = $this->get_post_data();
-
-        if (!isset($post_data['woocommerce_qnbpay_order_prefix']) || empty($post_data['woocommerce_qnbpay_order_prefix'])) {
-            WC_Admin_Settings::add_error(__('Order prefix is required.', 'qnbpay-woocommerce'));
-            return false;
-        }
-
-        // Validate order prefix format (uppercase letters and numbers only)
-        if (!preg_match('/^[A-Z0-9]+$/', $post_data['woocommerce_qnbpay_order_prefix'])) {
-            WC_Admin_Settings::add_error(__('Order prefix must contain only uppercase letters and numbers.', 'qnbpay-woocommerce'));
-            return false;
-        }
 
         // Validate sale webhook key format (letters and numbers only) if provided
         if (isset($post_data['woocommerce_qnbpay_sale_web_hook_key']) && !empty($post_data['woocommerce_qnbpay_sale_web_hook_key']) && !preg_match('/^[a-zA-Z0-9]+$/', $post_data['woocommerce_qnbpay_sale_web_hook_key'])) {
@@ -416,9 +413,8 @@ class QNBPay_Gateway extends WC_Payment_Gateway
         wp_enqueue_script('qnbpay-corejs', QNBPAY_URL . 'assets/qnbpay-admin.js', false, QNBPAY_VERSION);
         wp_localize_script('qnbpay-corejs', 'qnbpay_ajax', [
             'ajax_url' => admin_url('admin-ajax.php'),
-            'success_redirection' => __('Your transaction has been completed successfully. Within 2 seconds the page will be refreshed', 'qnbpay-woocommerce'),
-            'update_comission' => __('When you do this, all of the instalment data you have entered is deleted and the current ones from QNBPay servers are overwritten. The process cannot be reversed. To continue, please enter confirmation in the field below and continue the process. Otherwise, your transaction will not continue.', 'qnbpay-woocommerce'),
             'version' => QNBPAY_VERSION,
+            'nonce' => wp_create_nonce('qnbpay_ajax_nonce'),
             'installment_test' => __('Installment Rate Test', 'qnbpay-woocommerce'),
             'bin_test' => __('Bank Identification Test', 'qnbpay-woocommerce'),
             'remote_test' => __('Remote Connection Test', 'qnbpay-woocommerce'),
@@ -477,6 +473,9 @@ class QNBPay_Gateway extends WC_Payment_Gateway
      */
     public function payment_form_fields($cc_fields, $payment_id)
     {
+        if ($payment_id != $this->id || !$this->enabled) {
+            return $cc_fields;
+        }
 
         $referer = is_wc_endpoint_url('order-pay') ? 'order-pay' : 'checkout';
         $state = 'cart';
@@ -533,7 +532,7 @@ class QNBPay_Gateway extends WC_Payment_Gateway
                 </p>',
             'card-expiry-field' => '
                 <p class="form-row form-row-first">
-                    <label for="' . $payment_id . '-card-expiry">' . __('Expiry (MM/YY)', 'woocommerce') . ' <span class="required">*</span></label>
+                    <label for="' . $payment_id . '-card-expiry">' . __('Expiry (MM/YYYY)', 'qnbpay-woocommerce') . ' <span class="required">*</span></label>
 
                     <input
                         id="' . $payment_id . '-card-expiry"
@@ -572,6 +571,9 @@ class QNBPay_Gateway extends WC_Payment_Gateway
      */
     public function payment_fields()
     {
+        if (!$this->enabled) {
+            return;
+        }
         do_action('woocommerce_credit_card_form_start', $this->id);
         if ($this->testmode) {
             $testmode_notice = __('TEST MODE ENABLED. In test mode, you can use the card numbers listed in <a href="https://qnbpay.com.tr/">documentation</a>', 'qnbpay-woocommerce');
@@ -598,6 +600,9 @@ class QNBPay_Gateway extends WC_Payment_Gateway
      */
     public function payment_scripts()
     {
+        if (!$this->enabled) {
+            return;
+        }
         wp_enqueue_script('qnbpay-corejs', QNBPAY_URL . 'assets/qnbpay.js', ['jquery'], QNBPAY_VERSION, true);
         wp_localize_script('qnbpay-corejs', 'qnbpay_ajax', [
             'ajax_url' => admin_url('admin-ajax.php'),
@@ -676,14 +681,14 @@ class QNBPay_Gateway extends WC_Payment_Gateway
         $orderDetails = self::formatOrder($order, $postedData);
 
         // Log the formatted order details if debug mode is on
-        $qnbpaycore->saveOrderLog($orderId, 'formatOrder', $orderDetails, $postedData);
+        $qnbpaycore->saveOrderLog($orderId, $orderDetails['invoice_id'], 'formatOrder', $orderDetails, $postedData);
 
         $token = $qnbpaycore->getToken();
 
         // Handle token retrieval failure
         if (!$token) {
             wc_add_notice(__('Could not start payment process.', 'qnbpay-woocommerce'), 'error');
-            $qnbpaycore->saveOrderLog($orderId, 'tokenFailed', $orderDetails, $token);
+            $qnbpaycore->saveOrderLog($orderId, $orderDetails['invoice_id'], 'tokenFailed', $orderDetails, $token);
 
             return;
         }
@@ -709,9 +714,11 @@ class QNBPay_Gateway extends WC_Payment_Gateway
         $form[] = '</form><script>document.getElementById("' . $formId . '").submit()</script>';
 
         // Store the form HTML and hash key in order meta for later use (e.g., 3D Secure page)
-        update_post_meta($orderId, 'qnbpay_order_form', $form);
-        update_post_meta($orderId, 'qnbpay_order_hash', $orderDetails['hash_key']);
+        update_post_meta($orderId, '_qnbpay_order_form', $form);
+        update_post_meta($orderId, '_qnbpay_order_hash', $orderDetails['hash_key']);
+        update_post_meta($orderId, '_uuid', $orderDetails['invoice_id']);
 
+        do_action('qnbpay_woocommerce_transaction_start', $orderId, $orderDetails);
         // Return success and the redirection URL (to the intermediate form page)
         return [
             'result' => 'success',
@@ -776,28 +783,23 @@ class QNBPay_Gateway extends WC_Payment_Gateway
             'method' => 'formatOrder',
         ]);
 
-        // Create a custom order ID structure for QNBPay
+        // Create a custom order UUID structure for QNBPay
         $customOrderData = $qnbpaycore->createCustomOrderId($orderId);
 
         $invoiceId = $customOrderData['invoiceid'];
-        $customorderId = $customOrderData['customorderid'];
-        $invoice_description = sprintf(__('Order Payment OrderId:%s - CustomOrderId:%s - InvoiceId:%s', 'qnbpay-woocommerce'), $orderId, $customorderId, $invoiceId);
+        $invoice_description = sprintf(__('Order Payment OrderId:%s - InvoiceId:%s', 'qnbpay-woocommerce'), $orderId, $invoiceId);
 
         // Format order items for the API
         $items = [];
-        foreach ($order->get_items() as $item) {
+        foreach ($order->get_items(['shipping', 'line_item']) as $item) {
             $itemData = $item->get_data();
-            $tax = floatval($itemData['total_tax']);
-            if (isset($itemData['taxes'], $itemData['taxes']['total']) && !empty($itemData['taxes']['total']) && is_array($itemData['taxes']['total'])) {
-                $tax = array_sum($itemData['taxes']['total']);
-            }
-            $price = floatval($itemData['total']) + floatval($tax);
+            $price = floatval($order->get_line_total($item, true));
+            $quantity = $itemData['quantity'] ?? 1;
             $items[] = [
                 'name' => $itemData['name'],
-                'price' => $qnbpaycore->qnbpay_number_format($price / $itemData['quantity']),
-                'quantity' => $itemData['quantity'],
+                'price' => $qnbpaycore->qnbpay_number_format($price / $quantity),
+                'quantity' => $quantity,
                 'description' => $itemData['name'],
-                'data' => $itemData,
             ];
         }
 
@@ -864,36 +866,6 @@ class QNBPay_Gateway extends WC_Payment_Gateway
         $order_statuses = wc_get_order_statuses();
 
         return $order_statuses;
-    }
-
-    /**
-     * Generate a default order prefix.
-     *
-     * @return string Default order prefix.
-     */
-    private function generateDefaultOrderPrefix()
-    {
-        return strtoupper(sanitize_title($this->id));
-    }
-
-    /**
-     * Get information about the current logged-in user.
-     *
-     * @return array User data (id, name, email) or empty array if not logged in.
-     */
-    private function getUserInformationData()
-    {
-        global $current_user;
-
-        if (!$current_user) {
-            return [];
-        }
-
-        return [
-            'id' => $current_user->ID,
-            'name' => $current_user->display_name,
-            'email' => $current_user->user_email,
-        ];
     }
 
     /**
@@ -1069,7 +1041,7 @@ class QNBPay_Gateway extends WC_Payment_Gateway
                 // Set order status based on plugin settings
                 $order->update_status($this->settings['order_status']);
 
-                delete_post_meta($order_id, 'qnbpay_order_form');
+                delete_post_meta($order_id, '_qnbpay_order_form');
 
                 $payment_status_description = __('Your order has been paid successfully.', 'qnbpay-woocommerce');
 

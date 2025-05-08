@@ -18,6 +18,9 @@ class QNBPay_Init// Changed class name to follow WordPress standards (PascalCase
     /** @var QNBPay_Init|null Singleton instance */
     private static $instance = null;
 
+    /** @var array QNBPay gateway settings. */
+    public $qnbOptions;
+
     /**
      * Get the singleton instance of this class.
      *
@@ -56,6 +59,8 @@ class QNBPay_Init// Changed class name to follow WordPress standards (PascalCase
      */
     public function init()
     {
+        // Get QNBPay settings
+        $this->qnbOptions = get_option('woocommerce_qnbpay_settings');
         // Enqueue frontend styles
         add_action('wp_enqueue_scripts', [$this, 'pluginStyles']);
 
@@ -102,21 +107,21 @@ class QNBPay_Init// Changed class name to follow WordPress standards (PascalCase
     public function add_meta_box($post_type)
     {
         // Only add meta box for 'product' post type
-        if ($post_type == 'product') {
-            // Get QNBPay settings
-            $options = get_option('woocommerce_qnbpay_settings');
-            // Check if the 'limit by product' setting is enabled
-            $limitInstallmentByProduct = data_get($options, 'limitInstallmentByProduct', 'no') === 'yes';
-            if ($limitInstallmentByProduct) {
-                // Add the meta box to the product edit screen sidebar
-                add_meta_box(
-                    'qnbpay_installment_limit',
-                    __('Installment Limit', 'qnbpay-woocommerce'),
-                    [$this, 'render_meta_box_content'],
-                    $post_type,
-                    'side'
-                );
-            }
+        if ($post_type != 'product' || !data_get($this->qnbOptions, 'enabled')) {
+            return;
+        }
+
+        // Check if the 'limit by product' setting is enabled
+        $limitInstallmentByProduct = data_get($this->qnbOptions, 'limitInstallmentByProduct', 'no') === 'yes';
+        if ($limitInstallmentByProduct) {
+            // Add the meta box to the product edit screen sidebar
+            add_meta_box(
+                'qnbpay_installment_limit',
+                __('Installment Limit', 'qnbpay-woocommerce'),
+                [$this, 'render_meta_box_content'],
+                $post_type,
+                'side'
+            );
         }
     }
 
@@ -132,11 +137,16 @@ class QNBPay_Init// Changed class name to follow WordPress standards (PascalCase
             return;
         }
 
+        $is_autosave = wp_is_post_autosave( $post_id );
+        $is_revision = wp_is_post_revision( $post_id );
+
+        if ( $is_autosave || $is_revision ) {
+            return;
+        }
+
         // Check post type and user permissions
-        if (isset($_POST['post_type'])) {
-            if ('product' != $_POST['post_type'] || !current_user_can('manage_woocommerce')) {
-                return;
-            }
+        if (!(get_post_type($post_id) == 'product' && current_user_can('manage_woocommerce'))) {
+            return;
         }
 
         // Check if our meta box data was submitted
