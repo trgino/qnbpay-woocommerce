@@ -1,0 +1,30 @@
+name: Plugin Check
+
+# Official WordPress "Plugin Check" (PCP) runner — the same automated review
+# WordPress.org runs on submitted plugins. It boots WordPress for you, so no
+# local WordPress install is required. Validates coding standards, i18n,
+# security, and plugin-repo requirements.
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  plugin-check:
+    name: WordPress Plugin Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Plugin Check
+        uses: wordpress/plugin-check-action@v1
+        with:
+          exclude-directories: |
+            vendor
+            tests
+            docs
+            bin

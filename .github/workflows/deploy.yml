@@ -1,0 +1,31 @@
+name: Deploy to WordPress.org
+
+# Publishes a tagged release to the WordPress.org plugin SVN repository.
+#
+# Prerequisites (once the plugin is approved by the WordPress.org team):
+#   - Repository secrets: SVN_USERNAME and SVN_PASSWORD (your WordPress.org login).
+#   - Tag the release, e.g.  git tag 2.0.0 && git push origin 2.0.0
+#
+# Files listed in .distignore are excluded from the published package.
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy tag to WordPress.org
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: WordPress Plugin Deploy
+        uses: 10up/action-wordpress-plugin-deploy@stable
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+          SLUG: qnbpay-woocommerce

@@ -1,0 +1,29 @@
+# Files and directories excluded from the WordPress.org (SVN) plugin package.
+# Consumed by 10up/action-wordpress-plugin-deploy and `wp dist-archive`.
+
+# Version control / CI
+/.git
+/.github
+/.gitignore
+/.gitattributes
+/.distignore
+
+# Dev tooling
+/bin
+/tests
+/vendor
+/node_modules
+/composer.json
+/composer.lock
+/phpunit.xml.dist
+/phpunit-integration.xml.dist
+/phpstan.neon.dist
+
+# Docs / project meta (not needed at runtime)
+/docs
+/changelog.md
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log

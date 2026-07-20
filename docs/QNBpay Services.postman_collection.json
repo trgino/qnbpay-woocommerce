@@ -1,0 +1,455 @@
+{
+	"info": {
+		"_postman_id": "28f0efa9-c7d0-4dbf-8738-6c23f5ad909e",
+		"name": "QNBPay Services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26832232"
+	},
+	"item": [
+		{
+			"name": "GetToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"app_id\": \"07fb70f9d8de575f32baa6518e38c5d6\",\r\n    \"app_secret\": \"61d97b2cac247069495be4b16f8604db\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/token",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetPos",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY3NjQwLCJleHAiOjE3Mzk0NzQ4NDAsImlhdCI6MTczOTQ2NzY0MH0.L2Ap3JFj-JVgs6LNV9nQLy7Kt1nEuO1Z18MWmW5gHxU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"credit_card\": \"40227801\",\r\n    \"amount\": \"100\",\r\n    \"currency_code\": \"TRY\",\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\",\r\n    \"is_comission_from_user\": \"1\",\r\n    //\"commission_for_installment\": \"2,4\",\r\n    \"is_single_payment_allowed\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/getpos",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"getpos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Installments",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY3NjQwLCJleHAiOjE3Mzk0NzQ4NDAsImlhdCI6MTczOTQ2NzY0MH0.L2Ap3JFj-JVgs6LNV9nQLy7Kt1nEuO1Z18MWmW5gHxU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/installments",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"installments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Commissions",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY3NjQwLCJleHAiOjE3Mzk0NzQ4NDAsImlhdCI6MTczOTQ2NzY0MH0.L2Ap3JFj-JVgs6LNV9nQLy7Kt1nEuO1Z18MWmW5gHxU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"currency_code\": \"TRY\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/commissions",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"commissions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PaySmart3D",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cc_holder_name\": \"Aydın Öztürk\",\r\n    \"cc_no\": \"4022780520669303\",\r\n    \"expiry_month\": \"01\",\r\n    \"expiry_year\": \"2030\",\r\n    \"cvv\": \"000\",\r\n    \"currency_code\": \"TRY\",\r\n    \"installments_number\": 2,\r\n    \"invoice_id\": \"ornekfaturanumarasi0000002\",\r\n    \"invoice_description\": \" INVOICE TEST DESCRIPTION\",\r\n    \"total\": 123,\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\",\r\n    \"items\": [\r\n        {\r\n            \"name\": \"Item3\",\r\n            \"price\": 123,\r\n            \"qnantity\": 1,\r\n            \"description\": \"item3 description\"\r\n        }\r\n    ],\r\n    \"name\": \"Aydın\",\r\n    \"surname\": \"Öztürk\",\r\n    \"cancel_url\": \"https://aydin-ozturk.com/\",\r\n    \"return_url\": \"https://aydin-ozturk.com/\",\r\n    \"hash_key\": \"77f6b5f37db42657:5b5e:0pS0+LOLakp1f9qJKb4yRDZisCfzrjCXNZFYmNq7KiqOzU2ZOx6g4DH70Eff6UmoCcD3gG96CXLFMknbli1vDZJoPy1QUABQe6QNkCMWl__ivZnPhldPupeZbS1T1LuI4m1n0p60wEBXo6ZAPha+cuA==\",\r\n    \"transaction_type\": \"Auth\",\r\n    \"payment_completed_by\": \"app\",\r\n    \"is_comission_from_user\": 2,\r\n    \"response_method\": \"GET\"\r\n    //\"sale_web_hook_key\": \"hook\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/paySmart3D",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"paySmart3D"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Complete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY5NDE3LCJleHAiOjE3Mzk0NzY2MTcsImlhdCI6MTczOTQ2OTQxN30.V-ru2GcDwe419RbYDq0UkMDDxxDG-XkF0QpDYpgr_XM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\",\r\n    \"invoice_id\": \"ornekfaturanumarasi0000002\",\r\n    \"order_id\": \"63875076868124754624674\",\r\n    \"status\": \"complete\",\r\n    \"hash_key\": \"17980939e90ce67f:cbf1:zprFJ3URbxMci8soU58etMgzDLAN3Zo9hsnyOOQEoHQx5B44lnqB5IRwabJWjtUjPIUMp+awefF7qiVw5AUs5__5cHBXqQAxd8aZqBcyoMqg1+ugqW8QKTwtjujy8N6sAAbCS0gKKYc1gb7Dm35cT4sAnWmhS23B78WCE3BkVpIY=\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/payment/complete",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"payment",
+						"complete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PaySmart2D",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY5NDE3LCJleHAiOjE3Mzk0NzY2MTcsImlhdCI6MTczOTQ2OTQxN30.V-ru2GcDwe419RbYDq0UkMDDxxDG-XkF0QpDYpgr_XM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cc_holder_name\": \"Aydın Öztürk\",\r\n    \"cc_no\": \"4022780520669303\",\r\n    \"expiry_month\": \"01\",\r\n    \"expiry_year\": \"2030\",\r\n    \"cvv\": \"000\",\r\n    \"currency_code\": \"TRY\",\r\n    \"installments_number\": 2,\r\n    \"invoice_id\": \"ornekfaturanumarasi0000002\",\r\n    \"invoice_description\": \" INVOICE TEST DESCRIPTION\",\r\n    \"total\": 123,\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\",\r\n    \"items\": [\r\n        {\r\n            \"name\": \"Item3\",\r\n            \"price\": 123,\r\n            \"qnantity\": 1,\r\n            \"description\": \"item3 description\"\r\n        }\r\n    ],\r\n    \"name\": \"Aydın\",\r\n    \"surname\": \"Öztürk\",\r\n    \"hash_key\": \"77f6b5f37db42657:5b5e:0pS0+LOLakp1f9qJKb4yRDZisCfzrjCXNZFYmNq7KiqOzU2ZOx6g4DH70Eff6UmoCcD3gG96CXLFMknbli1vDZJoPy1QUABQe6QNkCMWl__ivZnPhldPupeZbS1T1LuI4m1n0p60wEBXo6ZAPha+cuA==\",\r\n    \"transaction_type\": \"Auth\",\r\n    \"is_comission_from_user\": 2\r\n    //\"sale_web_hook_key\": \"hook\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/paySmart2D",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"paySmart2D"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PayWithQnbpay",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY5NDE3LCJleHAiOjE3Mzk0NzY2MTcsImlhdCI6MTczOTQ2OTQxN30.V-ru2GcDwe419RbYDq0UkMDDxxDG-XkF0QpDYpgr_XM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\",\r\n    \"currency_code\": \"TRY\",\r\n    \"invoice\": {\r\n        \"invoice_id\": \"ornekfaturanumarasi0000004\",\r\n        \"invoice_description\": \"Fatura Tanımı\",\r\n        \"total\": \"100\",\r\n        \"return_url\": \"https://sample1.com.tr\",\r\n        \"cancel_url\": \"https://sample2.com.tr\",\r\n        \"response_method\": \"GET\",\r\n        \"items\": [\r\n            {\r\n                \"name\": \"Deneme\",\r\n                \"price\": \"100\",\r\n                \"quantity\": 1,\r\n                \"description\": \"Deneme\"\r\n            }\r\n        ]\r\n    },\r\n    \"name\": \"Isım\",\r\n    \"surname\": \"Soyisim\",\r\n    \"is_comission_from_user\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/purchase/link",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"purchase",
+						"link"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Checkstatus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY5NDE3LCJleHAiOjE3Mzk0NzY2MTcsImlhdCI6MTczOTQ2OTQxN30.V-ru2GcDwe419RbYDq0UkMDDxxDG-XkF0QpDYpgr_XM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\",\r\n    \"invoice_id\": \"Cs2Ghy621dsa42f1D2\",\r\n    \"include_pending_status\": true,\r\n    \"hash_key\": \"661ebbf2acc9d8bc:cb27:47tnM4SnmuVWRq9YMaHo2npFjXr7Nfe04poc_ri3g_R1NylhHZcj0Zu3Eul\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/checkstatus",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"checkstatus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConfirmPayment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY5NDE3LCJleHAiOjE3Mzk0NzY2MTcsImlhdCI6MTczOTQ2OTQxN30.V-ru2GcDwe419RbYDq0UkMDDxxDG-XkF0QpDYpgr_XM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invoice_id\": \"Cs2Ghy621dsa42f1D2\",\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\",\r\n    \"status\": 1,\r\n    \"hash_key\": \"661ebbf2acc9d8bc:cb27:47tnM4SnmuVWRq9YMaHo2npFjXr7Nfe04poc_ri3g_R1NylhHZcj0Zu3Eul\",\r\n    \"total\": 10.25\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/confirmPayment",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"confirmPayment"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Refund",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIwMTU4IiwibmJmIjoxNzM5NDY5NDE3LCJleHAiOjE3Mzk0NzY2MTcsImlhdCI6MTczOTQ2OTQxN30.V-ru2GcDwe419RbYDq0UkMDDxxDG-XkF0QpDYpgr_XM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"invoice_id\": \"ornekfaturanumarasi0000002\",\r\n    \"merchant_key\": \"$2y$10$N9IJkgazXMUwCzpn7NJrZePy3v.dIFOQUyW4yGfT3eWry6m.KxanK\",\r\n    \"amount\": \"100\",\r\n    \"hash_key\": \"cf72b38ab9926c58:97fa:L4G7yMnMfAkZZF__sWNB83oNZxyB2z__B5Qa+3ZeiLRjwdj4Ovvz74oW9O4fQAVyFGxwU1WckHP4ssMU0__qyjM7Sm653kq9iQXd2Mdguxo6lMzUgpASFcqZa9igNpdMVth\"\r\n    //\"refund_web_hook_key\":\"hook\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://test.qnbpay.com.tr/ccpayment/api/refund",
+					"protocol": "https",
+					"host": [
+						"test",
+						"qnbpay",
+						"com",
+						"tr"
+					],
+					"path": [
+						"ccpayment",
+						"api",
+						"refund"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

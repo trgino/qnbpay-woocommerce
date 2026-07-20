@@ -1,7 +1,7 @@
 {
     "name": "trgino/qnbpay-woocommerce",
     "type": "wordpress-plugin",
-    "license": "MIT",
+    "license": "GPL-2.0-or-later",
     "description": "QNBPay Payment Gateway for WooCommerce",
     "keywords": [
         "woocommerce",
@@ -24,16 +24,35 @@
         "email": "trgino@trgino.com"
     },
     "require": {
-        "php": ">=7.4",
-        "rappasoft/laravel-helpers": "^2.1"
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.6",
+        "brain/monkey": "^2.6",
+        "phpstan/phpstan": "^1.11",
+        "szepeviktor/phpstan-wordpress": "^1.3",
+        "php-stubs/woocommerce-stubs": "^9.0",
+        "yoast/phpunit-polyfills": "^1.1"
     },
     "autoload": {
-        "files": [
-            "includes/QNBPay_Core.php",
-            "includes/QNBPay_Gateway.php",
-            "includes/QNBPay_Init.php",
-            "includes/QNBPay_Ajax.php",
-            "includes/QNBPay_Transaction_History.php"
-        ]
+        "psr-4": {
+            "QNBPay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "QNBPay\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    },
+    "scripts": {
+        "lint": "find . -path ./vendor -prune -o -name '*.php' -print0 | xargs -0 -n1 php -l",
+        "phpstan": "phpstan analyse --no-progress",
+        "test": "phpunit"
     }
 }

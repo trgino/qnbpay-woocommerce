@@ -1,0 +1,77 @@
+name: Integration
+
+# Real WordPress + WooCommerce PHPUnit integration tests, running entirely on
+# GitHub-hosted runners (no local WordPress/WooCommerce install needed).
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  integration:
+    name: WP ${{ matrix.wp }} · WC ${{ matrix.wc }} · PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { php: '8.2', wp: 'latest', wc: 'latest' }
+          - { php: '7.4', wp: '6.3', wc: 'latest' }
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wordpress_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      WP_TESTS_DIR: /tmp/wordpress-tests-lib
+      WP_CORE_DIR: /tmp/wordpress
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mysqli, zip, gd
+          coverage: none
+          tools: composer:v2
+
+      - name: Install Subversion
+        run: sudo apt-get update && sudo apt-get install -y subversion
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: Install WordPress test suite
+        run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp }} true
+
+      - name: Install WooCommerce (${{ matrix.wc }})
+        run: |
+          set -e
+          mkdir -p "$WP_CORE_DIR/wp-content/plugins"
+          if [ "${{ matrix.wc }}" = "latest" ]; then
+            WC_URL="https://downloads.wordpress.org/plugin/woocommerce.zip"
+          else
+            WC_URL="https://downloads.wordpress.org/plugin/woocommerce.${{ matrix.wc }}.zip"
+          fi
+          curl -sL "$WC_URL" -o /tmp/woocommerce.zip
+          unzip -q /tmp/woocommerce.zip -d "$WP_CORE_DIR/wp-content/plugins/"
+
+      - name: Run integration tests
+        run: vendor/bin/phpunit -c phpunit-integration.xml.dist

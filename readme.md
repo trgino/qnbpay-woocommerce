@@ -1,80 +1,115 @@
 <p align="center">
-  <img alt="QNBPay.com" src="assets/img/qnbpay.png" width="300">
+  <img alt="QNBPay" src="assets/img/qnbpay.png" width="300">
 </p>
 <h1 align="center">QNBPay Payment Gateway for WooCommerce</h1>
 
 <p align="center">
-  <strong>Integrate QNBPay payment gateway with your WooCommerce store. Accept credit card payments with installment options and 3D Secure support.</strong>
+  <strong>Accept credit-card payments on your WooCommerce store via QNBPay — Turkey's QNB virtual POS (sanal POS) — with installments, 3D&nbsp;Secure and refunds.</strong>
 </p>
+
 <p align="center">
   <a href="https://github.com/trgino/qnbpay-woocommerce/blob/main/LICENSE">
     <img alt="License" src="https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg">
   </a>
-  <a href="#">
-    <img alt="Version" src="https://img.shields.io/badge/version-1.0.1-brightgreen.svg">
-  </a>
-  <a href="#">
-    <img alt="WordPress" src="https://img.shields.io/badge/WordPress->=5.6-blue.svg">
-  </a>
-  <a href="#">
-    <img alt="PHP" src="https://img.shields.io/badge/PHP->=7.4-blueviolet.svg">
-  </a>
+  <img alt="Version" src="https://img.shields.io/badge/version-2.0.0-brightgreen.svg">
+  <img alt="WordPress" src="https://img.shields.io/badge/WordPress->=5.6-blue.svg">
+  <img alt="WooCommerce" src="https://img.shields.io/badge/WooCommerce->=6.0-96588a.svg">
+  <img alt="PHP" src="https://img.shields.io/badge/PHP-7.4--8.4-blueviolet.svg">
+  <img alt="HPOS" src="https://img.shields.io/badge/HPOS-compatible-success.svg">
 </p>
 
 ---
 
-## Description
+## About QNBPay
 
-This plugin allows you to accept credit card payments directly on your WooCommerce store via QNBPay.
+**QNBPay is a Turkish payment provider (QNB virtual POS / *sanal POS*).** It
+processes credit-card payments in Turkey — including bank installment plans
+(*taksit*) and 3D Secure — for merchants with a QNBPay account. This plugin
+integrates that gateway into WooCommerce.
 
-### Features:
+- Test API: `https://test.qnbpay.com.tr/`
+- Production API: `https://portal.qnbpay.com.tr/`
+- Provider: <https://qnbpay.com.tr/>
 
-*   Accept major credit cards.
-*   Support for installment payments.
-*   Optional 3D Secure integration for enhanced security.
-*   Test mode for development and testing.
-*   Customizable order prefix for reporting.
-*   Option to limit installments globally, per product, or by cart amount.
-*   Webhook support for payment status updates.
-*   Transaction history log within the WordPress admin area.
-*   Debug mode for troubleshooting.
+## Features
+
+- 💳 Accept major credit cards, with optional **3D Secure**.
+- 🧾 **Installments** (*taksit*) with global, per-product and cart-amount limits.
+- ↩️ **Refunds** directly from the WooCommerce order screen.
+- ⚡ **HPOS** (High-Performance Order Storage) compatible.
+- 🧱 **Cart & Checkout Blocks** compatible (block-based checkout).
+- 🔔 **Webhook** support with hash verification.
+- 🛡️ **Background reconciliation** (Action Scheduler) that completes pending
+  orders confirmed by `checkstatus` when a webhook or return is missed.
+- 📜 Transaction history log in the WordPress admin.
+- 🐞 Debug logging via the native WooCommerce logger (WooCommerce → Status → Logs).
+
+## Security
+
+- Card data (PAN/CVV) is **never stored** in the WordPress database. The 3D
+  Secure redirect form lives only in a short-lived, single-use transient and is
+  rendered once, then immediately deleted.
+- Sensitive values are masked in all logs.
+- Fail-safe by design: on any unexpected error the order is left pending, the
+  reason is logged, and the reconciliation job finalizes it once the bank
+  confirms — a failure never silently loses a payment.
+
+## Requirements
+
+| | Minimum |
+|---|---|
+| PHP | 7.4 (tested through 8.4) |
+| WordPress | 5.6 |
+| WooCommerce | 6.0 |
 
 ## Installation
 
-1.  **Download:** Download the latest release ZIP file from the [Releases](https://github.com/trgino/qnbpay-woocommerce/releases) page (or clone the repository).
-2.  **Upload:** Go to your WordPress Admin > Plugins > Add New > Upload Plugin. Choose the downloaded ZIP file and click "Install Now".
-3.  **Activate:** Activate the plugin through the 'Plugins' menu in WordPress.
-4.  **Configure:**
-    *   Go to WooCommerce > Settings > Payments.
-    *   Find "QNBPay" and click "Manage".
-    *   Enable the gateway.
-    *   Enter your Merchant Key, Merchant ID, App Key, and App Secret provided by QNBPay.
-    *   Configure Test Mode, 3D Secure, and Installment options as needed.
-    *   Set your desired Order Prefix and successful Order Status.
-    *   Enter your Sale Webhook Key (if using webhooks) and copy the provided Webhook URL into your QNBPay merchant panel.
-5.  **Save:** Save changes.
+1. **Download** the latest release ZIP from the [Releases](https://github.com/trgino/qnbpay-woocommerce/releases) page.
+2. **Upload** via WordPress Admin → Plugins → Add New → Upload Plugin, then **Activate**.
+3. **Configure** at WooCommerce → Settings → Payments → QNBPay → *Manage*:
+   - Enable the gateway.
+   - Enter your **Merchant Key, Merchant ID, App Key, App Secret** (provided by QNBPay).
+   - Configure Test Mode, 3D Secure, installment and order-status options.
+   - (Optional) Set the **Sale Webhook Key** and copy the shown **Webhook URL** into your QNBPay merchant panel.
+4. **Save changes.**
 
-## Frequently Asked Questions (FAQ)
+## FAQ
 
-*   **Where do I find my API keys (Merchant Key, Merchant ID, App Key, App Secret)?**
-    These credentials are provided by QNBPay when you open a merchant account. Please contact QNBPay support if you don't have them.
-*   **How do installments work?**
-    If enabled, customers can choose an installment plan during checkout based on their credit card BIN and the options configured in your QNBPay account and plugin settings. You can set global limits, product-specific limits, or limits based on the minimum cart amount.
-*   **What is the Webhook URL for?**
-    The Webhook URL allows QNBPay to send notifications directly to your store about payment status changes. You need to copy the URL shown in the plugin settings and paste it into the corresponding field in your QNBPay merchant panel. The Sale Webhook Key must also match the key set in the panel.
-*   **How can I test the gateway?**
-    Enable "Test Mode" in the plugin settings. Use the test card numbers provided in the QNBPay documentation.
-*   **Where can I see the transaction logs?**
-    Go to WooCommerce > QNBPay Transactions in your WordPress admin area.
+- **Where do I find my API keys?** They are provided by QNBPay when you open a merchant account. Contact QNBPay support if you don't have them.
+- **How do installments work?** Customers pick an installment plan at checkout based on their card BIN and your QNBPay/plugin limits (global, per-product or minimum cart amount).
+- **What is the Webhook URL for?** It lets QNBPay notify your store of payment status changes. Paste the URL from the settings into your QNBPay panel; the Sale Webhook Key must match.
+- **How can I test?** Enable *Test Mode* and use the test cards from the QNBPay documentation.
+- **Where are the logs?** Transactions: WooCommerce → QNBPay Transactions. Debug logs: WooCommerce → Status → Logs.
+
+## Development
+
+Development tooling is dependency-managed with Composer (runtime needs **no**
+`vendor/` — the plugin ships its own PSR-4 autoloader).
+
+```bash
+composer install          # dev dependencies (PHPUnit, PHPStan, stubs)
+composer lint             # php -l across the codebase
+composer phpstan          # static analysis (WordPress/WooCommerce stubs)
+composer test             # unit tests (Brain Monkey — no WordPress needed)
+```
+
+### Continuous integration
+
+GitHub Actions runs everything without a local WordPress/WooCommerce install:
+
+- **`ci.yml`** — PHP lint matrix (7.4–8.4) · PHPStan · PHPUnit unit tests.
+- **`plugin-check.yml`** — the official WordPress *Plugin Check*.
+- **`integration.yml`** — real WordPress + WooCommerce PHPUnit tests (MySQL service + WP test suite).
 
 ## Changelog
 
-Please see the `changelog.md` file for more details.
+See [`changelog.md`](changelog.md).
 
 ## Support
 
-For issues or questions regarding the plugin, please open an issue on the GitHub repository. For issues related to your QNBPay account or API credentials, please contact QNBPay Support.
+For plugin issues, open a GitHub issue. For QNBPay account/API-credential
+questions, contact QNBPay support.
 
 ## License
 
-This plugin is licensed under the GPLv2 or later. See the `LICENSE` file for details.
+GPLv2 or later. See [`LICENSE`](LICENSE).

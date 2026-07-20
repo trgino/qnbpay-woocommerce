@@ -34,7 +34,7 @@
 
 .qnbpay-admin-test-details button {
     background-color: #0073aa;
-    color: white;
+    color: #fff;
     border: none;
     padding: 8px 15px;
     border-radius: 3px;
@@ -88,59 +88,6 @@
 .qnbpay-admin-test-results .test-status.failed {
     background-color: #f2dede;
     color: #a94442;
-}
-
-#comission-rates {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-#comission-rates td,
-#comission-rates th {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-#comission-rates tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-#comission-rates tr:hover {
-    background-color: #ddd;
-}
-
-#comission-rates th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    background-color: #0073aa;
-    color: white;
-}
-
-.center-title {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.center-title h2 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.center-title button {
-    background-color: #0073aa;
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-.center-title button:hover {
-    background-color: #005177;
 }
 
 @media (max-width: 768px) {

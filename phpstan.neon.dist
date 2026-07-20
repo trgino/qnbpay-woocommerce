@@ -1,0 +1,21 @@
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+    # WooCommerce Blocks ships its own package that is not part of the stubs, so
+    # the AbstractPaymentMethodType-based integration is excluded from analysis.
+    excludePaths:
+        - src/Blocks/BlocksSupport.php
+    bootstrapFiles:
+        - tests/phpstan-bootstrap.php
+    scanFiles:
+        - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
+    treatPhpDocTypesAsCertain: false
+    reportUnmatchedIgnoredErrors: false
+    ignoreErrors:
+        # Classes resolved at runtime behind class_exists() guards and not present in the stubs.
+        - '#Automattic\\WooCommerce\\#'
+        - '#Call to method [a-zA-Z_]+\(\) on an unknown class#'
