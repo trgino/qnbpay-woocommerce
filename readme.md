@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="QNBPay" src="assets/img/qnbpay.png?v=2.0.1" width="300">
+  <img alt="QNBPay" src="assets/img/qnbpay.png?v=2.0.2" width="300">
 </p>
 <h1 align="center">QNBPay Payment Gateway for WooCommerce</h1>
 
