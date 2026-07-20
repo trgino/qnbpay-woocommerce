@@ -11,7 +11,7 @@
   <a href="https://github.com/trgino/qnbpay-woocommerce/blob/main/LICENSE">
     <img alt="License" src="https://img.shields.io/badge/license-GPL--2.0--or--later-blue.svg">
   </a>
-  <img alt="Version" src="https://img.shields.io/badge/version-2.0.1-brightgreen.svg">
+  <img alt="Version" src="https://img.shields.io/badge/version-2.0.2-brightgreen.svg">
   <img alt="WordPress" src="https://img.shields.io/badge/WordPress->=5.6-blue.svg">
   <img alt="WooCommerce" src="https://img.shields.io/badge/WooCommerce->=6.0-96588a.svg">
   <img alt="PHP" src="https://img.shields.io/badge/PHP-7.4--8.4-blueviolet.svg">

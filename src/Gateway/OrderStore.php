@@ -167,10 +167,11 @@ class OrderStore
 
         $table = $wpdb->prefix . 'qnbpay_orders_ids';
         // Table name is built from $wpdb->prefix (no user input); safe to interpolate.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB.UnescapedDBParameter
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $found = $wpdb->get_var(
             $wpdb->prepare("SELECT orderid FROM {$table} WHERE invoiceid = %s ORDER BY createdate DESC LIMIT 1", $invoice_id)
         );
+        // phpcs:enable
         if ($found) {
             return (int) $found;
         }

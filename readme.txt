@@ -2,11 +2,11 @@
 Contributors: trgino
 Tags: woocommerce, payment gateway, qnbpay, turkey, installment
 Requires at least: 5.6
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.4
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,9 @@ forwarded to QNBPay to complete the transaction. Use of QNBPay is subject to
 their terms and privacy policy: https://qnbpay.com.tr/
 
 == Changelog ==
+
+= 2.0.2 =
+* WordPress Plugin Check compliance: "Tested up to" bumped, and the invoice-lookup query fully covered by phpcs (prepared-SQL).
 
 = 2.0.1 =
 * Renamed the plugin slug and text domain to "qnbpay-for-woocommerce" for WordPress.org naming compliance.

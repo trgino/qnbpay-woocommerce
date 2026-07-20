@@ -1,3 +1,6 @@
+#### 2.0.2
+- WordPress Plugin Check compliance: "Tested up to" updated to the current WordPress release, and the invoice-lookup query is now fully covered by the phpcs prepared-SQL exemption.
+
 #### 2.0.1
 - Renamed the plugin slug and text domain to `qnbpay-for-woocommerce` (WordPress.org naming compliance).
 - WordPress Plugin Check fixes: i18n translators comments, text-domain consistency, `$_GET`/`$_SERVER` sanitization, output escaping.
