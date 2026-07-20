@@ -60,7 +60,7 @@ class Gateway extends \WC_Payment_Gateway
         $this->icon = '';
         $this->has_fields = true;
         $this->method_title = 'QNBPay';
-        $this->method_description = __('QNBPay WooCommerce Gateway', 'qnbpay-woocommerce');
+        $this->method_description = __('QNBPay WooCommerce Gateway', 'qnbpay-for-woocommerce');
         $this->supports = ['products', 'refunds'];
 
         $this->init_form_fields();
@@ -160,7 +160,7 @@ class Gateway extends \WC_Payment_Gateway
         $installment_options = [];
         for ($i = 1; $i <= 12; $i++) {
             /* translators: %s: number of installments */
-            $installment_options[$i] = sprintf(__('%s Installment', 'qnbpay-woocommerce'), $i);
+            $installment_options[$i] = sprintf(__('%s Installment', 'qnbpay-for-woocommerce'), $i);
         }
 
         $webhook_url = add_query_arg(
@@ -170,101 +170,101 @@ class Gateway extends \WC_Payment_Gateway
 
         $this->form_fields = [
             'enabled' => [
-                'title' => __('Enable/Disable', 'qnbpay-woocommerce'),
-                'label' => __('Enable QNBPay Gateway?', 'qnbpay-woocommerce'),
+                'title' => __('Enable/Disable', 'qnbpay-for-woocommerce'),
+                'label' => __('Enable QNBPay Gateway?', 'qnbpay-for-woocommerce'),
                 'type' => 'checkbox',
                 'default' => 'no',
             ],
             'title' => [
-                'title' => __('Title', 'qnbpay-woocommerce'),
+                'title' => __('Title', 'qnbpay-for-woocommerce'),
                 'type' => 'text',
-                'description' => __('This controls the title which the user sees during checkout.', 'qnbpay-woocommerce'),
-                'default' => __('Credit Card', 'qnbpay-woocommerce'),
+                'description' => __('This controls the title which the user sees during checkout.', 'qnbpay-for-woocommerce'),
+                'default' => __('Credit Card', 'qnbpay-for-woocommerce'),
                 'desc_tip' => true,
             ],
             'description' => [
-                'title' => __('Description', 'qnbpay-woocommerce'),
+                'title' => __('Description', 'qnbpay-for-woocommerce'),
                 'type' => 'textarea',
-                'description' => __('This controls the description which the user sees during checkout.', 'qnbpay-woocommerce'),
-                'default' => __('Pay securely with your credit card.', 'qnbpay-woocommerce'),
+                'description' => __('This controls the description which the user sees during checkout.', 'qnbpay-for-woocommerce'),
+                'default' => __('Pay securely with your credit card.', 'qnbpay-for-woocommerce'),
             ],
             'qnbhr1' => ['type' => 'qnbhr'],
-            'merchant_key' => ['title' => __('Merchant Key', 'qnbpay-woocommerce'), 'type' => 'text'],
-            'merchant_id' => ['title' => __('Merchant ID', 'qnbpay-woocommerce'), 'type' => 'text'],
-            'app_key' => ['title' => __('App Key', 'qnbpay-woocommerce'), 'type' => 'text'],
-            'app_secret' => ['title' => __('App Secret', 'qnbpay-woocommerce'), 'type' => 'password'],
+            'merchant_key' => ['title' => __('Merchant Key', 'qnbpay-for-woocommerce'), 'type' => 'text'],
+            'merchant_id' => ['title' => __('Merchant ID', 'qnbpay-for-woocommerce'), 'type' => 'text'],
+            'app_key' => ['title' => __('App Key', 'qnbpay-for-woocommerce'), 'type' => 'text'],
+            'app_secret' => ['title' => __('App Secret', 'qnbpay-for-woocommerce'), 'type' => 'password'],
             'order_prefix' => [
-                'title' => __('Order Prefix', 'qnbpay-woocommerce'),
+                'title' => __('Order Prefix', 'qnbpay-for-woocommerce'),
                 'type' => 'text',
-                'description' => __('Prefix added to the invoice id sent to QNBPay (letters and numbers only).', 'qnbpay-woocommerce'),
+                'description' => __('Prefix added to the invoice id sent to QNBPay (letters and numbers only).', 'qnbpay-for-woocommerce'),
                 'default' => 'WC',
                 'desc_tip' => true,
             ],
             'qnbhr2' => ['type' => 'qnbhr'],
             'sale_web_hook_key' => [
-                'title' => __('Sale Webhook Key', 'qnbpay-woocommerce'),
+                'title' => __('Sale Webhook Key', 'qnbpay-for-woocommerce'),
                 'type' => 'text',
-                'description' => __('Enter the key you defined in the QNBPay merchant panel for webhook notifications. Webhook URL: ', 'qnbpay-woocommerce') . '<code>' . esc_url($webhook_url) . '</code>',
+                'description' => __('Enter the key you defined in the QNBPay merchant panel for webhook notifications. Webhook URL: ', 'qnbpay-for-woocommerce') . '<code>' . esc_url($webhook_url) . '</code>',
             ],
             'qnbhr_webhook' => ['type' => 'qnbhr'],
             'testmode' => [
-                'title' => 'Test ' . __('Enable/Disable', 'qnbpay-woocommerce'),
-                'label' => __('Enable Test Mode?', 'qnbpay-woocommerce'),
+                'title' => 'Test ' . __('Enable/Disable', 'qnbpay-for-woocommerce'),
+                'label' => __('Enable Test Mode?', 'qnbpay-for-woocommerce'),
                 'type' => 'checkbox',
-                'description' => __('Place the payment gateway in test mode using test API keys.', 'qnbpay-woocommerce'),
+                'description' => __('Place the payment gateway in test mode using test API keys.', 'qnbpay-for-woocommerce'),
                 'default' => 'yes',
                 'desc_tip' => true,
             ],
             'qnbhr3' => ['type' => 'qnbhr'],
             'enable_3d' => [
-                'title' => __('Enable 3D', 'qnbpay-woocommerce'),
-                'label' => __('Enable 3D Secure Payment?', 'qnbpay-woocommerce'),
+                'title' => __('Enable 3D', 'qnbpay-for-woocommerce'),
+                'label' => __('Enable 3D Secure Payment?', 'qnbpay-for-woocommerce'),
                 'type' => 'checkbox',
                 'default' => 'yes',
             ],
             'qnbhr4' => ['type' => 'qnbhr'],
             'installment' => [
-                'title' => __('Installment', 'qnbpay-woocommerce'),
-                'label' => __('Enable/Disable Installment?', 'qnbpay-woocommerce'),
+                'title' => __('Installment', 'qnbpay-for-woocommerce'),
+                'label' => __('Enable/Disable Installment?', 'qnbpay-for-woocommerce'),
                 'type' => 'checkbox',
                 'default' => 'yes',
             ],
             'limitInstallment' => [
-                'title' => __('Limit Installment', 'qnbpay-woocommerce'),
+                'title' => __('Limit Installment', 'qnbpay-for-woocommerce'),
                 'type' => 'select',
                 'options' => $installment_options,
                 'default' => '12',
             ],
             'limitInstallmentByProduct' => [
-                'title' => __('Limit Installment By Product', 'qnbpay-woocommerce'),
-                'label' => __('Enable/Disable Installment by Product?', 'qnbpay-woocommerce'),
+                'title' => __('Limit Installment By Product', 'qnbpay-for-woocommerce'),
+                'label' => __('Enable/Disable Installment by Product?', 'qnbpay-for-woocommerce'),
                 'type' => 'checkbox',
                 'default' => 'no',
             ],
             'limitInstallmentByCart' => [
-                'title' => __('Limit Installment By Cart Amount', 'qnbpay-woocommerce'),
-                'label' => __('Enable/Disable Installment by Cart Amount?', 'qnbpay-woocommerce'),
+                'title' => __('Limit Installment By Cart Amount', 'qnbpay-for-woocommerce'),
+                'label' => __('Enable/Disable Installment by Cart Amount?', 'qnbpay-for-woocommerce'),
                 'type' => 'checkbox',
                 'default' => 'no',
             ],
             'limitInstallmentByCartAmount' => [
-                'title' => __('Installment Minimum Cart Amount', 'qnbpay-woocommerce'),
-                'label' => __('Orders below this amount are charged in advance.', 'qnbpay-woocommerce'),
+                'title' => __('Installment Minimum Cart Amount', 'qnbpay-for-woocommerce'),
+                'label' => __('Orders below this amount are charged in advance.', 'qnbpay-for-woocommerce'),
                 'type' => 'number',
                 'default' => 0,
             ],
             'qnbhr5' => ['type' => 'qnbhr'],
             'order_status' => [
-                'title' => __('Order Status', 'qnbpay-woocommerce'),
+                'title' => __('Order Status', 'qnbpay-for-woocommerce'),
                 'type' => 'select',
-                'description' => __('Order status to set when a payment is successfully completed.', 'qnbpay-woocommerce'),
+                'description' => __('Order status to set when a payment is successfully completed.', 'qnbpay-for-woocommerce'),
                 'options' => wc_get_order_statuses(),
                 'default' => 'wc-completed',
             ],
             'qnbhr6' => ['type' => 'qnbhr'],
             'debugMode' => [
-                'title' => __('Enable/Disable Debug Mode', 'qnbpay-woocommerce'),
-                'label' => __('Log requests to WooCommerce logs (WooCommerce > Status > Logs).', 'qnbpay-woocommerce'),
+                'title' => __('Enable/Disable Debug Mode', 'qnbpay-for-woocommerce'),
+                'label' => __('Log requests to WooCommerce logs (WooCommerce > Status > Logs).', 'qnbpay-for-woocommerce'),
                 'type' => 'checkbox',
                 'default' => 'no',
             ],
@@ -282,7 +282,7 @@ class Gateway extends \WC_Payment_Gateway
         $key = Arr::str(Arr::get($post_data, 'woocommerce_qnbpay_sale_web_hook_key'));
 
         if ('' !== $key && !preg_match('/^[a-zA-Z0-9]+$/', $key)) {
-            \WC_Admin_Settings::add_error(__('Sale webhook key must contain only letters and numbers.', 'qnbpay-woocommerce'));
+            \WC_Admin_Settings::add_error(__('Sale webhook key must contain only letters and numbers.', 'qnbpay-for-woocommerce'));
 
             return false;
         }
@@ -320,19 +320,19 @@ class Gateway extends \WC_Payment_Gateway
         <div class="qnbpay-admin-interface">
             <div class="left">
                 <img src="<?php echo esc_url(QNBPAY_URL . 'assets/img/qnbpay.png'); ?>" alt="QNBPay" />
-                <h2><?php esc_html_e('QNBPay Settings', 'qnbpay-woocommerce');
-                    wc_back_link(__('Return to payments', 'woocommerce'), $return_url); ?></h2>
+                <h2><?php esc_html_e('QNBPay Settings', 'qnbpay-for-woocommerce');
+                    wc_back_link(__('Return to payments', 'qnbpay-for-woocommerce'), $return_url); ?></h2>
                 <table class="form-table"><?php $this->generate_settings_html(); ?></table>
                 <div class="qnbpay-admin-test-details">
-                    <button type="button" class="qnbpay-admin-dotest"><?php esc_html_e('Test Informations', 'qnbpay-woocommerce'); ?></button>
+                    <button type="button" class="qnbpay-admin-dotest"><?php esc_html_e('Test Informations', 'qnbpay-for-woocommerce'); ?></button>
                 </div>
                 <div class="qnbpay-admin-test-results"></div>
             </div>
             <div class="right">
                 <div class="qnbpay">
-                    <h3><?php esc_html_e('QNBPay', 'qnbpay-woocommerce'); ?></h3>
-                    <p><?php esc_html_e('QNBPay Payment Gateway for WooCommerce', 'qnbpay-woocommerce'); ?></p>
-                    <p><a href="https://qnbpay.com.tr/" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Visit Website', 'qnbpay-woocommerce'); ?></a></p>
+                    <h3><?php esc_html_e('QNBPay', 'qnbpay-for-woocommerce'); ?></h3>
+                    <p><?php esc_html_e('QNBPay Payment Gateway for WooCommerce', 'qnbpay-for-woocommerce'); ?></p>
+                    <p><a href="https://qnbpay.com.tr/" target="_blank" rel="noopener noreferrer"><?php esc_html_e('Visit Website', 'qnbpay-for-woocommerce'); ?></a></p>
                 </div>
             </div>
         </div>
@@ -354,12 +354,12 @@ class Gateway extends \WC_Payment_Gateway
             'ajax_url' => admin_url('admin-ajax.php'),
             'version' => QNBPAY_VERSION,
             'nonce' => wp_create_nonce('qnbpay_ajax_nonce'),
-            'installment_test' => __('Installment Rate Test', 'qnbpay-woocommerce'),
-            'bin_test' => __('Bank Identification Test', 'qnbpay-woocommerce'),
-            'remote_test' => __('Remote Connection Test', 'qnbpay-woocommerce'),
-            'success' => __('Success', 'qnbpay-woocommerce'),
-            'failed' => __('Failed', 'qnbpay-woocommerce'),
-            'view_logs' => __('View logs', 'qnbpay-woocommerce'),
+            'installment_test' => __('Installment Rate Test', 'qnbpay-for-woocommerce'),
+            'bin_test' => __('Bank Identification Test', 'qnbpay-for-woocommerce'),
+            'remote_test' => __('Remote Connection Test', 'qnbpay-for-woocommerce'),
+            'success' => __('Success', 'qnbpay-for-woocommerce'),
+            'failed' => __('Failed', 'qnbpay-for-woocommerce'),
+            'view_logs' => __('View logs', 'qnbpay-for-woocommerce'),
             'logs_url' => admin_url('admin.php?page=wc-status&tab=logs'),
         ];
     }
@@ -384,14 +384,14 @@ class Gateway extends \WC_Payment_Gateway
             'current-step-of-payment' => '<p class="form-row form-row-wide">'
                 . '<input id="' . $payment_id . '-current-step-of-payment" class="current-step-of-payment" type="hidden" value="' . esc_attr($referer) . '" name="' . $payment_id . '-current-step-of-payment" />'
                 . '<input id="' . $payment_id . '-current-order-state" class="current-order-state" type="hidden" value="' . esc_attr($state) . '" name="' . $payment_id . '-current-order-state" /></p>',
-            'name-on-card' => '<p class="form-row form-row-wide"><label for="' . $payment_id . '-card-holder">' . esc_html__('Name On Card', 'qnbpay-woocommerce') . ' <span class="required">*</span></label>'
-                . '<input id="' . $payment_id . '-card-holder" class="input-text wc-credit-card-form-card-holder" type="text" autocomplete="off" placeholder="' . esc_attr__('Name On Card', 'qnbpay-woocommerce') . '" name="' . $payment_id . '-name-oncard" /></p>',
-            'card-number-field' => '<p class="form-row form-row-wide"><label for="' . $payment_id . '-card-number">' . esc_html__('Card Number', 'qnbpay-woocommerce') . ' <span class="required">*</span></label>'
+            'name-on-card' => '<p class="form-row form-row-wide"><label for="' . $payment_id . '-card-holder">' . esc_html__('Name On Card', 'qnbpay-for-woocommerce') . ' <span class="required">*</span></label>'
+                . '<input id="' . $payment_id . '-card-holder" class="input-text wc-credit-card-form-card-holder" type="text" autocomplete="off" placeholder="' . esc_attr__('Name On Card', 'qnbpay-for-woocommerce') . '" name="' . $payment_id . '-name-oncard" /></p>',
+            'card-number-field' => '<p class="form-row form-row-wide"><label for="' . $payment_id . '-card-number">' . esc_html__('Card Number', 'qnbpay-for-woocommerce') . ' <span class="required">*</span></label>'
                 . '<input id="' . $payment_id . '-card-number" class="input-text wc-credit-card-form-card-number" autocomplete="cc-number" autocorrect="no" autocapitalize="no" spellcheck="no" inputmode="numeric" type="tel" maxlength="24" placeholder="&bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull;" name="' . $payment_id . '-card-number" /></p>',
-            'card-expiry-field' => '<p class="form-row form-row-first"><label for="' . $payment_id . '-card-expiry">' . esc_html__('Expiry (MM/YY)', 'qnbpay-woocommerce') . ' <span class="required">*</span></label>'
-                . '<input id="' . $payment_id . '-card-expiry" class="input-text wc-credit-card-form-card-expiry" inputmode="numeric" autocomplete="cc-exp" autocorrect="no" autocapitalize="no" spellcheck="no" type="tel" placeholder="' . esc_attr__('MM / YY', 'woocommerce') . '" name="' . $payment_id . '-card-expiry" /></p>',
-            'card-cvc-field' => '<p class="form-row form-row-last"><label for="' . $payment_id . '-card-cvc">' . esc_html__('Card Code', 'qnbpay-woocommerce') . ' <span class="required">*</span></label>'
-                . '<input id="' . $payment_id . '-card-cvc" class="input-text wc-credit-card-form-card-cvc" inputmode="numeric" autocomplete="off" autocorrect="no" autocapitalize="no" spellcheck="no" type="tel" maxlength="4" placeholder="' . esc_attr__('CVC', 'woocommerce') . '" name="' . $payment_id . '-card-cvc" /></p>',
+            'card-expiry-field' => '<p class="form-row form-row-first"><label for="' . $payment_id . '-card-expiry">' . esc_html__('Expiry (MM/YY)', 'qnbpay-for-woocommerce') . ' <span class="required">*</span></label>'
+                . '<input id="' . $payment_id . '-card-expiry" class="input-text wc-credit-card-form-card-expiry" inputmode="numeric" autocomplete="cc-exp" autocorrect="no" autocapitalize="no" spellcheck="no" type="tel" placeholder="' . esc_attr__('MM / YY', 'qnbpay-for-woocommerce') . '" name="' . $payment_id . '-card-expiry" /></p>',
+            'card-cvc-field' => '<p class="form-row form-row-last"><label for="' . $payment_id . '-card-cvc">' . esc_html__('Card Code', 'qnbpay-for-woocommerce') . ' <span class="required">*</span></label>'
+                . '<input id="' . $payment_id . '-card-cvc" class="input-text wc-credit-card-form-card-cvc" inputmode="numeric" autocomplete="off" autocorrect="no" autocapitalize="no" spellcheck="no" type="tel" maxlength="4" placeholder="' . esc_attr__('CVC', 'qnbpay-for-woocommerce') . '" name="' . $payment_id . '-card-cvc" /></p>',
         ];
 
         return $cc_fields;
@@ -408,11 +408,11 @@ class Gateway extends \WC_Payment_Gateway
             return;
         }
         try {
-            do_action('woocommerce_credit_card_form_start', $this->id);
+            do_action('woocommerce_credit_card_form_start', $this->id); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
 
         $description = $this->description;
         if ($this->testmode) {
-            $description .= '<br>' . __('TEST MODE ENABLED. Use the test card numbers from the QNBPay documentation.', 'qnbpay-woocommerce');
+            $description .= '<br>' . __('TEST MODE ENABLED. Use the test card numbers from the QNBPay documentation.', 'qnbpay-for-woocommerce');
         }
         if (!empty($description)) {
             echo wpautop(wp_kses_post($description)); // phpcs:ignore WordPress.Security.EscapeOutput
@@ -424,7 +424,7 @@ class Gateway extends \WC_Payment_Gateway
         $cc_form->form();
         echo '<div id="qnbpay-installment-table"></div>';
 
-            do_action('woocommerce_credit_card_form_end', $this->id);
+            do_action('woocommerce_credit_card_form_end', $this->id); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
         } catch (\Throwable $e) {
             Plugin::instance()->logger()->exception('payment_fields', $e);
         }
@@ -460,7 +460,7 @@ class Gateway extends \WC_Payment_Gateway
         } catch (\Throwable $e) {
             Plugin::instance()->logger()->exception('validate_fields', $e);
             // Fail closed: block checkout rather than submit unvalidated data.
-            wc_add_notice(__('Could not validate the payment details. Please try again.', 'qnbpay-woocommerce'), 'error');
+            wc_add_notice(__('Could not validate the payment details. Please try again.', 'qnbpay-for-woocommerce'), 'error');
 
             return false;
         }
@@ -477,25 +477,25 @@ class Gateway extends \WC_Payment_Gateway
         $valid = true;
 
         if (empty(Arr::get($posted, $this->id . '-name-oncard'))) {
-            wc_add_notice(__('Card holder is required.', 'qnbpay-woocommerce'), 'error');
+            wc_add_notice(__('Card holder is required.', 'qnbpay-for-woocommerce'), 'error');
             $valid = false;
         }
         $number = preg_replace('/\D+/', '', Arr::str(Arr::get($posted, $this->id . '-card-number')));
         if (strlen($number) < 12) {
-            wc_add_notice(__('A valid card number is required.', 'qnbpay-woocommerce'), 'error');
+            wc_add_notice(__('A valid card number is required.', 'qnbpay-for-woocommerce'), 'error');
             $valid = false;
         }
         $expiry = Arr::str(Arr::get($posted, $this->id . '-card-expiry'));
         if (strpos($expiry, '/') === false) {
-            wc_add_notice(__('A valid card expiry (MM/YY) is required.', 'qnbpay-woocommerce'), 'error');
+            wc_add_notice(__('A valid card expiry (MM/YY) is required.', 'qnbpay-for-woocommerce'), 'error');
             $valid = false;
         }
         if (empty(Arr::get($posted, $this->id . '-card-cvc'))) {
-            wc_add_notice(__('Card CVC is required.', 'qnbpay-woocommerce'), 'error');
+            wc_add_notice(__('Card CVC is required.', 'qnbpay-for-woocommerce'), 'error');
             $valid = false;
         }
         if ($this->installment && empty(Arr::get($posted, $this->id . '-installment')) && empty(Arr::get($posted, 'qnbpay-installment'))) {
-            wc_add_notice(__('Please select an installment option.', 'qnbpay-woocommerce'), 'error');
+            wc_add_notice(__('Please select an installment option.', 'qnbpay-for-woocommerce'), 'error');
             $valid = false;
         }
 
@@ -520,7 +520,7 @@ class Gateway extends \WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
         if (!$order) {
-            wc_add_notice(__('Order not found.', 'qnbpay-woocommerce'), 'error');
+            wc_add_notice(__('Order not found.', 'qnbpay-for-woocommerce'), 'error');
 
             return;
         }
@@ -533,7 +533,7 @@ class Gateway extends \WC_Payment_Gateway
 
             $token = $this->client()->token();
             if (!$token) {
-                wc_add_notice(__('Could not start payment process. Please try again.', 'qnbpay-woocommerce'), 'error');
+                wc_add_notice(__('Could not start payment process. Please try again.', 'qnbpay-for-woocommerce'), 'error');
                 $this->orders()->log($order_id, $request['invoice_id'], 'tokenFailed', []);
 
                 return;
@@ -579,7 +579,7 @@ class Gateway extends \WC_Payment_Gateway
             ];
         } catch (\Throwable $e) {
             Plugin::instance()->logger()->exception('process_payment', $e);
-            wc_add_notice(__('An unexpected error occurred while starting the payment.', 'qnbpay-woocommerce'), 'error');
+            wc_add_notice(__('An unexpected error occurred while starting the payment.', 'qnbpay-for-woocommerce'), 'error');
 
             return;
         }
@@ -649,7 +649,7 @@ class Gateway extends \WC_Payment_Gateway
             'invoice_id' => $invoice_id,
             'invoice_description' => sprintf(
                 /* translators: 1: order id, 2: invoice id */
-                __('Order Payment OrderId:%1$s - InvoiceId:%2$s', 'qnbpay-woocommerce'),
+                __('Order Payment OrderId:%1$s - InvoiceId:%2$s', 'qnbpay-for-woocommerce'),
                 $order_id,
                 $invoice_id
             ),
@@ -702,12 +702,12 @@ class Gateway extends \WC_Payment_Gateway
     {
         $order = wc_get_order($order_id);
         if (!$order) {
-            return new \WP_Error('qnbpay_refund_error', __('Order not found.', 'qnbpay-woocommerce'));
+            return new \WP_Error('qnbpay_refund_error', __('Order not found.', 'qnbpay-for-woocommerce'));
         }
 
         $invoice_id = $this->orders()->get_invoice_id($order);
         if (empty($invoice_id)) {
-            return new \WP_Error('qnbpay_refund_error', __('QNBPay invoice id is missing for this order.', 'qnbpay-woocommerce'));
+            return new \WP_Error('qnbpay_refund_error', __('QNBPay invoice id is missing for this order.', 'qnbpay-for-woocommerce'));
         }
 
         try {
@@ -717,21 +717,21 @@ class Gateway extends \WC_Payment_Gateway
             if (!$result['status']) {
                 return new \WP_Error(
                     'qnbpay_refund_error',
-                    $result['message'] ? $result['message'] : __('Refund could not be completed by QNBPay.', 'qnbpay-woocommerce')
+                    $result['message'] ? $result['message'] : __('Refund could not be completed by QNBPay.', 'qnbpay-for-woocommerce')
                 );
             }
 
             $order->add_order_note(sprintf(
                 /* translators: %s: refund amount */
-                __('QNBPay refund completed. Amount: %s', 'qnbpay-woocommerce'),
-                is_null($amount) ? __('full', 'qnbpay-woocommerce') : wc_price($amount)
+                __('QNBPay refund completed. Amount: %s', 'qnbpay-for-woocommerce'),
+                is_null($amount) ? __('full', 'qnbpay-for-woocommerce') : wc_price($amount)
             ));
 
             return true;
         } catch (\Throwable $e) {
             Plugin::instance()->logger()->exception('process_refund', $e);
 
-            return new \WP_Error('qnbpay_refund_error', __('An unexpected error occurred during refund.', 'qnbpay-woocommerce'));
+            return new \WP_Error('qnbpay_refund_error', __('An unexpected error occurred during refund.', 'qnbpay-for-woocommerce'));
         }
     }
 
@@ -761,8 +761,8 @@ class Gateway extends \WC_Payment_Gateway
         }
 
         // phpcs:disable WordPress.Security.NonceVerification.Recommended
-        $show_error = isset($_GET['qnbpayerror']) && '1' === (string) $_GET['qnbpayerror'];
-        $show_recheck = isset($_GET['qnbpayrecheck']) && '1' === (string) $_GET['qnbpayrecheck'];
+        $show_error = isset($_GET['qnbpayerror']) && '1' === sanitize_text_field(wp_unslash($_GET['qnbpayerror']));
+        $show_recheck = isset($_GET['qnbpayrecheck']) && '1' === sanitize_text_field(wp_unslash($_GET['qnbpayrecheck']));
         // phpcs:enable
 
         if ($show_error) {
@@ -915,9 +915,9 @@ class Gateway extends \WC_Payment_Gateway
             $normalized = ('wc-' === substr($target_status, 0, 3)) ? substr($target_status, 3) : $target_status;
             // payment_complete() may set 'processing'; force the configured status if it differs.
             if ($normalized && $order->get_status() !== $normalized) {
-                $order->update_status($normalized, __('Payment completed via QNBPay.', 'qnbpay-woocommerce'));
+                $order->update_status($normalized, __('Payment completed via QNBPay.', 'qnbpay-for-woocommerce'));
             } else {
-                $order->add_order_note(__('Payment completed via QNBPay.', 'qnbpay-woocommerce'));
+                $order->add_order_note(__('Payment completed via QNBPay.', 'qnbpay-for-woocommerce'));
             }
 
             return true;
@@ -927,7 +927,7 @@ class Gateway extends \WC_Payment_Gateway
         // reconciler passes false so a payment still pending at the bank is not
         // failed prematurely (it will be retried on the next run).
         if ($mark_failed) {
-            $reason = Arr::str(Arr::get($status['body'], 'status_description', __('Payment has not been confirmed.', 'qnbpay-woocommerce')));
+            $reason = Arr::str(Arr::get($status['body'], 'status_description', __('Payment has not been confirmed.', 'qnbpay-for-woocommerce')));
             if ('failed' !== $order->get_status()) {
                 $order->update_status('failed', $reason);
             }

@@ -94,7 +94,7 @@ final class Plugin
             $this->logger()->exception('boot', $e);
             add_action('admin_notices', function () {
                 echo '<div class="notice notice-error"><p>'
-                    . esc_html__('QNBPay Payment Gateway failed to initialise. Check WooCommerce > Status > Logs.', 'qnbpay-woocommerce')
+                    . esc_html__('QNBPay Payment Gateway failed to initialise. Check WooCommerce > Status > Logs.', 'qnbpay-for-woocommerce')
                     . '</p></div>';
             });
         }
@@ -107,8 +107,8 @@ final class Plugin
      */
     private function register_modules()
     {
-        // Load translations.
-        add_action('init', [$this, 'load_textdomain']);
+        // Translations are loaded automatically by WordPress (just-in-time) since
+        // 4.6 because the text domain matches the plugin slug.
 
         // Schema upgrade guard + rewrite rules.
         add_action('init', [Installer::class, 'maybe_upgrade']);
@@ -180,21 +180,11 @@ final class Plugin
     {
         $message = sprintf(
             /* translators: 1: min PHP, 2: min WooCommerce */
-            esc_html__('QNBPay Payment Gateway requires WooCommerce %2$s+ and PHP %1$s+ to run.', 'qnbpay-woocommerce'),
+            esc_html__('QNBPay Payment Gateway requires WooCommerce %2$s+ and PHP %1$s+ to run.', 'qnbpay-for-woocommerce'),
             esc_html(QNBPAY_MIN_PHP),
             esc_html(QNBPAY_MIN_WC)
         );
         echo '<div class="notice notice-error"><p>' . $message . '</p></div>'; // phpcs:ignore WordPress.Security.EscapeOutput
-    }
-
-    /**
-     * Load the plugin text domain.
-     *
-     * @return void
-     */
-    public function load_textdomain()
-    {
-        load_plugin_textdomain('qnbpay-woocommerce', false, dirname(QNBPAY_BASENAME) . '/languages');
     }
 
     /**

@@ -126,7 +126,7 @@ class Installments
 
         $bin = substr(preg_replace('/\D+/', '', Arr::str(Arr::get($args, 'binNumber'))), 0, 8);
         if (strlen($bin) !== 8) {
-            $result['message'] = __('Credit card number is required.', 'qnbpay-woocommerce');
+            $result['message'] = __('Credit card number is required.', 'qnbpay-for-woocommerce');
 
             return $result;
         }
@@ -153,7 +153,7 @@ class Installments
         $installments = $response['status'] ? $response['body'] : [];
 
         $result['status'] = true;
-        $result['message'] = $response['status'] ? __('Success', 'qnbpay-woocommerce') : $response['message'];
+        $result['message'] = $response['status'] ? __('Success', 'qnbpay-for-woocommerce') : $response['message'];
         $result['cardInformation'] = is_array($installments) ? $installments : [];
         $result['maxInstallment'] = $max;
         $result['html'] = $this->render($result['cardInformation'], $max, $state);
@@ -217,16 +217,19 @@ class Installments
         }
 
         $html .= '<div class="qnbpay-installments">';
-        $html .= '<div class="qnbpay-installments-title">' . esc_html__('Installment Selection', 'qnbpay-woocommerce') . '</div>';
+        $html .= '<div class="qnbpay-installments-title">' . esc_html__('Installment Selection', 'qnbpay-for-woocommerce') . '</div>';
 
         foreach ($installments as $row) {
             $no = (int) Arr::get($row, 'installments_number', 0);
             if ($no < 1 || $no > $max) {
                 continue;
             }
-            $label = 1 === $no
-                ? esc_html__('Payment In Advance', 'qnbpay-woocommerce')
-                : sprintf(esc_html__('%d installments', 'qnbpay-woocommerce'), $no);
+            if (1 === $no) {
+                $label = esc_html__('Payment In Advance', 'qnbpay-for-woocommerce');
+            } else {
+                /* translators: %d: number of installments */
+                $label = sprintf(esc_html__('%d installments', 'qnbpay-for-woocommerce'), $no);
+            }
             $checked = 1 === $no ? ' checked' : '';
             $html .= '<div class="qnbpay-installments-row">'
                 . '<input' . $checked . ' id="installment-pick' . $no . '" type="radio" class="input-radio w-w-50" name="qnbpay-installment" value="' . $no . '">'

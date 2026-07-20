@@ -40,11 +40,11 @@ class TransactionsTable extends \WP_List_Table
     public function get_columns()
     {
         return [
-            'id' => __('ID', 'qnbpay-woocommerce'),
-            'orderid' => __('Order ID', 'qnbpay-woocommerce'),
-            'action' => __('Action', 'qnbpay-woocommerce'),
-            'invoiceid' => __('Invoice ID', 'qnbpay-woocommerce'),
-            'createdate' => __('Date', 'qnbpay-woocommerce'),
+            'id' => __('ID', 'qnbpay-for-woocommerce'),
+            'orderid' => __('Order ID', 'qnbpay-for-woocommerce'),
+            'action' => __('Action', 'qnbpay-for-woocommerce'),
+            'invoiceid' => __('Invoice ID', 'qnbpay-for-woocommerce'),
+            'createdate' => __('Date', 'qnbpay-for-woocommerce'),
         ];
     }
 
@@ -62,7 +62,8 @@ class TransactionsTable extends \WP_List_Table
         $current_page = $this->get_pagenum();
         $offset = ($current_page - 1) * $per_page;
 
-        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL
+        // Table name is built from $wpdb->prefix (no user input); safe to interpolate.
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $total_items = (int) $wpdb->get_var("SELECT COUNT(id) FROM {$table}");
         $items = $wpdb->get_results(
             $wpdb->prepare("SELECT * FROM {$table} ORDER BY createdate DESC LIMIT %d OFFSET %d", $per_page, $offset),
@@ -115,7 +116,7 @@ class TransactionsTable extends \WP_List_Table
         );
 
         $actions = [
-            'view' => '<a href="' . esc_url($view_url) . '">' . esc_html__('View', 'qnbpay-woocommerce') . '</a>',
+            'view' => '<a href="' . esc_url($view_url) . '">' . esc_html__('View', 'qnbpay-for-woocommerce') . '</a>',
         ];
 
         return sprintf('%1$s %2$s', esc_html((string) $item['id']), $this->row_actions($actions));
@@ -150,6 +151,6 @@ class TransactionsTable extends \WP_List_Table
      */
     public function no_items()
     {
-        esc_html_e('No transactions found.', 'qnbpay-woocommerce');
+        esc_html_e('No transactions found.', 'qnbpay-for-woocommerce');
     }
 }

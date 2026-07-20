@@ -58,7 +58,7 @@ final class Util
             }
         }
 
-        $remote = isset($_SERVER['REMOTE_ADDR']) ? (string) wp_unslash($_SERVER['REMOTE_ADDR']) : '';
+        $remote = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '';
 
         return filter_var($remote, FILTER_VALIDATE_IP) ? $remote : '127.0.0.1';
     }

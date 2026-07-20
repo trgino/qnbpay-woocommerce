@@ -16,7 +16,7 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
 global $wpdb;
 
 // Options.
-$options = [
+$qnbpay_options = [
     'woocommerce_qnbpay_settings',
     'qnbpay_db_version',
     'qnbpay_webhook_hash',
@@ -25,8 +25,8 @@ $options = [
     'woocommerce_qnbpay_version',
     'qnbpay_delta',
 ];
-foreach ($options as $option) {
-    delete_option($option);
+foreach ($qnbpay_options as $qnbpay_option) {
+    delete_option($qnbpay_option);
 }
 
 // Scheduled events (Action Scheduler + any legacy WP-Cron event).

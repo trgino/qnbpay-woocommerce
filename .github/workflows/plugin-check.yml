@@ -4,6 +4,10 @@ name: Plugin Check
 # WordPress.org runs on submitted plugins. It boots WordPress for you, so no
 # local WordPress install is required. Validates coding standards, i18n,
 # security, and plugin-repo requirements.
+#
+# The check runs against a distribution copy built by stripping everything in
+# .distignore (dev tooling, CI config, dotfiles) so the result matches what is
+# published to WordPress.org — not the raw Git checkout.
 
 on:
   push:
@@ -18,13 +22,14 @@ jobs:
     name: WordPress Plugin Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+
+      - name: Build distribution copy (apply .distignore)
+        run: |
+          mkdir -p "${{ runner.temp }}/dist/qnbpay-for-woocommerce"
+          rsync -a --exclude-from=.distignore ./ "${{ runner.temp }}/dist/qnbpay-for-woocommerce/"
 
       - name: Run Plugin Check
         uses: wordpress/plugin-check-action@v1
         with:
-          exclude-directories: |
-            vendor
-            tests
-            docs
-            bin
+          build-dir: ${{ runner.temp }}/dist/qnbpay-for-woocommerce

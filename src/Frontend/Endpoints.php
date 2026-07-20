@@ -170,7 +170,8 @@ class Endpoints
         }
 
         // phpcs:disable WordPress.Security.NonceVerification.Missing
-        $post = ('POST' === (isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '')) ? map_deep(wp_unslash($_POST), 'wc_clean') : [];
+        $request_method = isset($_SERVER['REQUEST_METHOD']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD'])) : '';
+        $post = ('POST' === $request_method) ? map_deep(wp_unslash($_POST), 'wc_clean') : [];
         // phpcs:enable
         $payment_status = Arr::get($post, 'payment_status', Arr::get($post, 'qnbpay_status', 0));
         $invoice_id = Arr::str(Arr::get($post, 'invoice_id', $orders->get_meta($order, OrderStore::META_INVOICE)));
@@ -179,7 +180,7 @@ class Endpoints
 
         // Explicit rejection.
         if ((string) $payment_status === '0' || '' === $invoice_id) {
-            $reason = Arr::str(Arr::get($post, 'status_description', __('Payment for your order has been rejected by the payment broker.', 'qnbpay-woocommerce')));
+            $reason = Arr::str(Arr::get($post, 'status_description', __('Payment for your order has been rejected by the payment broker.', 'qnbpay-for-woocommerce')));
             $orders->set_meta($order, OrderStore::META_ERROR, $reason);
             wp_safe_redirect($this->pay_error_url($order));
             exit;
@@ -190,7 +191,7 @@ class Endpoints
         // Verify with checkstatus (source of truth).
         $status = $this->plugin->client()->check_status($invoice_id);
         if (!$status['status']) {
-            $orders->set_meta($order, OrderStore::META_RECHECK, __('Your payment is being processed. Please wait...', 'qnbpay-woocommerce'));
+            $orders->set_meta($order, OrderStore::META_RECHECK, __('Your payment is being processed. Please wait...', 'qnbpay-for-woocommerce'));
             wp_safe_redirect(add_query_arg(['qnbpayrecheck' => 1, 'key' => $order->get_order_key()], wc_get_endpoint_url('order-pay', (string) $order_id, wc_get_checkout_url())));
             exit;
         }
@@ -200,7 +201,7 @@ class Endpoints
             exit;
         }
 
-        $reason = Arr::str(Arr::get($status['body'], 'status_description', __('Payment has not been confirmed.', 'qnbpay-woocommerce')));
+        $reason = Arr::str(Arr::get($status['body'], 'status_description', __('Payment has not been confirmed.', 'qnbpay-for-woocommerce')));
         $orders->set_meta($order, OrderStore::META_ERROR, $reason);
         wp_safe_redirect($this->pay_error_url($order));
         exit;
@@ -227,11 +228,12 @@ class Endpoints
      */
     private function no_cache()
     {
+        // Third-party cache-plugin flags (LiteSpeed Cache / common page caches).
         if (!defined('LSCACHE_NO_CACHE')) {
-            define('LSCACHE_NO_CACHE', true);
+            define('LSCACHE_NO_CACHE', true); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
         }
         if (!defined('DONOTCACHEPAGE')) {
-            define('DONOTCACHEPAGE', true);
+            define('DONOTCACHEPAGE', true); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
         }
         nocache_headers();
     }

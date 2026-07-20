@@ -39,11 +39,17 @@ tests_add_filter('muplugins_loaded', '_qnbpay_load_plugins');
  * Install WooCommerce tables once WordPress + WC are loaded.
  */
 tests_add_filter('setup_theme', function () {
-    if (class_exists('WC_Install')) {
+    if (!class_exists('WC_Install')) {
+        echo 'WooCommerce not loaded — check the WP/WC version matrix.' . PHP_EOL; // phpcs:ignore
+        return;
+    }
+    try {
         WC_Install::install();
         // Flush the roles/caps so WC is fully initialised.
         $GLOBALS['wp_roles'] = null; // phpcs:ignore WordPress.WP.GlobalVariablesOverride
         wp_roles();
+    } catch (\Throwable $e) {
+        echo 'WooCommerce install failed: ' . $e->getMessage() . PHP_EOL; // phpcs:ignore
     }
 });
 

@@ -20,8 +20,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { php: '8.2', wp: 'latest', wc: 'latest' }
-          - { php: '7.4', wp: '6.3', wc: 'latest' }
+          # WooCommerce is pinned to a stable version compatible with the WP
+          # under test (the newest WC can require a WP newer than current stable).
+          - { php: '8.2', wp: 'latest', wc: '9.4.0' }
+          - { php: '7.4', wp: '6.5', wc: '9.4.0' }
 
     services:
       mysql:
@@ -42,7 +44,7 @@ jobs:
       WP_CORE_DIR: /tmp/wordpress
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

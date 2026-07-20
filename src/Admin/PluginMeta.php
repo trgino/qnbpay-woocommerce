@@ -37,8 +37,8 @@ class PluginMeta
             return $links;
         }
 
-        $links[] = '<a href="https://qnbpay.com.tr/" target="_blank" rel="noopener noreferrer">' . esc_html__('Website', 'qnbpay-woocommerce') . '</a>';
-        $links[] = '<a href="https://qnbpay.com.tr/contact" target="_blank" rel="noopener noreferrer">' . esc_html__('Report Issue', 'qnbpay-woocommerce') . '</a>';
+        $links[] = '<a href="https://qnbpay.com.tr/" target="_blank" rel="noopener noreferrer">' . esc_html__('Website', 'qnbpay-for-woocommerce') . '</a>';
+        $links[] = '<a href="https://qnbpay.com.tr/contact" target="_blank" rel="noopener noreferrer">' . esc_html__('Report Issue', 'qnbpay-for-woocommerce') . '</a>';
 
         return $links;
     }
@@ -51,7 +51,7 @@ class PluginMeta
      */
     public function action_links($links)
     {
-        $settings = '<a href="' . esc_url(admin_url('admin.php?page=wc-settings&tab=checkout&section=qnbpay')) . '">' . esc_html__('Settings', 'qnbpay-woocommerce') . '</a>';
+        $settings = '<a href="' . esc_url(admin_url('admin.php?page=wc-settings&tab=checkout&section=qnbpay')) . '">' . esc_html__('Settings', 'qnbpay-for-woocommerce') . '</a>';
         array_unshift($links, $settings);
 
         return $links;

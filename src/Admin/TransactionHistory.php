@@ -35,8 +35,8 @@ class TransactionHistory
     {
         add_submenu_page(
             'woocommerce',
-            __('QNBPay Transaction History', 'qnbpay-woocommerce'),
-            __('QNBPay Transactions', 'qnbpay-woocommerce'),
+            __('QNBPay Transaction History', 'qnbpay-for-woocommerce'),
+            __('QNBPay Transactions', 'qnbpay-for-woocommerce'),
             'manage_woocommerce',
             'qnbpay-transaction-history',
             [$this, 'render']
@@ -51,7 +51,7 @@ class TransactionHistory
     public function render()
     {
         if (!current_user_can('manage_woocommerce')) {
-            wp_die(esc_html__('Permission denied.', 'qnbpay-woocommerce'));
+            wp_die(esc_html__('Permission denied.', 'qnbpay-for-woocommerce'));
         }
 
         try {
@@ -63,7 +63,7 @@ class TransactionHistory
 
         if ('view' === $action && $id) {
             if (!wp_verify_nonce($nonce, 'qnbpay_transaction_action')) {
-                wp_die(esc_html__('Security check failed', 'qnbpay-woocommerce'));
+                wp_die(esc_html__('Security check failed', 'qnbpay-for-woocommerce'));
             }
             $this->render_details($id);
 
@@ -74,7 +74,7 @@ class TransactionHistory
         } catch (\Throwable $e) {
             \QNBPay\Plugin::instance()->logger()->exception('transaction_history', $e);
             echo '<div class="notice notice-error"><p>'
-                . esc_html__('Could not load transactions. Check WooCommerce > Status > Logs.', 'qnbpay-woocommerce')
+                . esc_html__('Could not load transactions. Check WooCommerce > Status > Logs.', 'qnbpay-for-woocommerce')
                 . '</p></div>';
         }
     }
@@ -90,7 +90,7 @@ class TransactionHistory
         $table->prepare_items();
 
         echo '<div class="wrap">';
-        echo '<h1>' . esc_html__('QNBPay Transaction History', 'qnbpay-woocommerce') . '</h1>';
+        echo '<h1>' . esc_html__('QNBPay Transaction History', 'qnbpay-for-woocommerce') . '</h1>';
         echo '<form method="get">';
         echo '<input type="hidden" name="page" value="qnbpay-transaction-history" />';
         $table->display();
@@ -124,37 +124,38 @@ class TransactionHistory
         global $wpdb;
 
         $table = $wpdb->prefix . 'qnbpay_orders';
-        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL
+        // Table name is built from $wpdb->prefix (no user input); safe to interpolate.
+        // phpcs:disable WordPress.DB.DirectDatabaseQuery, WordPress.DB.PreparedSQL, PluginCheck.Security.DirectDB.UnescapedDBParameter
         $row = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$table} WHERE id = %d", $id));
         // phpcs:enable
 
         if (!$row) {
-            wp_die(esc_html__('Transaction not found', 'qnbpay-woocommerce'));
+            wp_die(esc_html__('Transaction not found', 'qnbpay-for-woocommerce'));
         }
 
         $date_format = get_option('date_format') . ' ' . get_option('time_format');
 
-        echo '<div class="wrap"><h1>' . esc_html__('Transaction Details', 'qnbpay-woocommerce')
+        echo '<div class="wrap"><h1>' . esc_html__('Transaction Details', 'qnbpay-for-woocommerce')
             . ' (Log ID: ' . esc_html($row->id) . ' / Order ID: ' . esc_html($row->orderid) . ')</h1>';
         echo '<p><a href="' . esc_url(admin_url('admin.php?page=qnbpay-transaction-history')) . '" class="button">'
-            . esc_html__('Back to Transaction History', 'qnbpay-woocommerce') . '</a> ';
+            . esc_html__('Back to Transaction History', 'qnbpay-for-woocommerce') . '</a> ';
         if ($row->orderid > 0) {
             echo '<a href="' . esc_url($this->order_edit_url((int) $row->orderid)) . '" class="button" target="_blank">'
-                . esc_html__('View Order', 'qnbpay-woocommerce') . ' (' . esc_html($row->orderid) . ')</a>';
+                . esc_html__('View Order', 'qnbpay-for-woocommerce') . ' (' . esc_html($row->orderid) . ')</a>';
         }
         echo '</p>';
 
         echo '<table class="wp-list-table widefat fixed striped"><tbody>';
-        $this->detail_row(__('Log ID', 'qnbpay-woocommerce'), $row->id);
-        $this->detail_row(__('Order ID', 'qnbpay-woocommerce'), $row->orderid);
-        $this->detail_row(__('Invoice ID', 'qnbpay-woocommerce'), $row->invoiceid);
-        $this->detail_row(__('Action', 'qnbpay-woocommerce'), $row->action);
-        $this->detail_row(__('Date', 'qnbpay-woocommerce'), date_i18n($date_format, strtotime($row->createdate)));
+        $this->detail_row(__('Log ID', 'qnbpay-for-woocommerce'), $row->id);
+        $this->detail_row(__('Order ID', 'qnbpay-for-woocommerce'), $row->orderid);
+        $this->detail_row(__('Invoice ID', 'qnbpay-for-woocommerce'), $row->invoiceid);
+        $this->detail_row(__('Action', 'qnbpay-for-woocommerce'), $row->action);
+        $this->detail_row(__('Date', 'qnbpay-for-woocommerce'), date_i18n($date_format, strtotime($row->createdate)));
 
-        echo '<tr><td valign="top"><strong>' . esc_html__('Data', 'qnbpay-woocommerce') . '</strong></td><td>';
+        echo '<tr><td valign="top"><strong>' . esc_html__('Data', 'qnbpay-for-woocommerce') . '</strong></td><td>';
         $this->print_json($row->data);
         echo '</td></tr>';
-        echo '<tr><td valign="top"><strong>' . esc_html__('Details', 'qnbpay-woocommerce') . '</strong></td><td>';
+        echo '<tr><td valign="top"><strong>' . esc_html__('Details', 'qnbpay-for-woocommerce') . '</strong></td><td>';
         $this->print_json($row->details);
         echo '</td></tr>';
 

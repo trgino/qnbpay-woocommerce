@@ -55,7 +55,7 @@ class Ajax
             wp_send_json([
                 'status' => false,
                 'retry' => true,
-                'message' => __('Invalid nonce', 'qnbpay-woocommerce'),
+                'message' => __('Invalid nonce', 'qnbpay-for-woocommerce'),
             ]);
         }
 
@@ -71,11 +71,11 @@ class Ajax
                     $this->test($posted);
                     break;
                 default:
-                    wp_send_json(['status' => false, 'message' => __('Unknown request.', 'qnbpay-woocommerce')]);
+                    wp_send_json(['status' => false, 'message' => __('Unknown request.', 'qnbpay-for-woocommerce')]);
             }
         } catch (\Throwable $e) {
             $this->plugin->logger()->exception('ajax:' . $method, $e);
-            wp_send_json(['status' => false, 'message' => __('An unexpected error occurred.', 'qnbpay-woocommerce')]);
+            wp_send_json(['status' => false, 'message' => __('An unexpected error occurred.', 'qnbpay-for-woocommerce')]);
         }
     }
 
@@ -115,19 +115,19 @@ class Ajax
         $result = ['status' => false, 'retry' => false, 'url' => false, 'message' => ''];
 
         if (!$order_id) {
-            $result['message'] = __('Order ID is required.', 'qnbpay-woocommerce');
+            $result['message'] = __('Order ID is required.', 'qnbpay-for-woocommerce');
             wp_send_json($result);
         }
 
         $order = wc_get_order($order_id);
         if (!$order) {
-            $result['message'] = __('Order not found.', 'qnbpay-woocommerce');
+            $result['message'] = __('Order not found.', 'qnbpay-for-woocommerce');
             wp_send_json($result);
         }
 
         $invoice_id = $this->plugin->orders()->get_invoice_id($order);
         if (empty($invoice_id)) {
-            $result['message'] = __('Invoice reference missing.', 'qnbpay-woocommerce');
+            $result['message'] = __('Invoice reference missing.', 'qnbpay-for-woocommerce');
             wp_send_json($result);
         }
 
@@ -137,18 +137,18 @@ class Ajax
 
             if (!$status['status']) {
                 $result['retry'] = true;
-                $result['message'] = __('Check result not found. Trying again.', 'qnbpay-woocommerce');
+                $result['message'] = __('Check result not found. Trying again.', 'qnbpay-for-woocommerce');
                 wp_send_json($result);
             }
 
             if ($gateway->finalize_from_checkstatus($order, $invoice_id, 'recheck')) {
                 $result['status'] = true;
-                $result['message'] = __('Your order has been paid successfully.', 'qnbpay-woocommerce');
+                $result['message'] = __('Your order has been paid successfully.', 'qnbpay-for-woocommerce');
                 $result['url'] = add_query_arg(['qnbpaysuccess' => 1], $order->get_checkout_order_received_url());
                 wp_send_json($result);
             }
 
-            $result['message'] = __('Payment has not been confirmed.', 'qnbpay-woocommerce');
+            $result['message'] = __('Payment has not been confirmed.', 'qnbpay-for-woocommerce');
             $result['url'] = add_query_arg(
                 ['qnbpayerror' => 1, 'pay_for_order' => true, 'key' => $order->get_order_key()],
                 wc_get_endpoint_url('order-pay', (string) $order_id, wc_get_checkout_url())
@@ -157,7 +157,7 @@ class Ajax
         } catch (\Throwable $e) {
             $this->plugin->logger()->exception('recheck', $e);
             $result['retry'] = true;
-            $result['message'] = __('An error occurred. Trying again.', 'qnbpay-woocommerce');
+            $result['message'] = __('An error occurred. Trying again.', 'qnbpay-for-woocommerce');
             wp_send_json($result);
         }
     }
@@ -171,7 +171,7 @@ class Ajax
     private function test(array $posted)
     {
         if (!current_user_can('manage_woocommerce')) {
-            wp_send_json(['status' => false, 'message' => __('Permission denied.', 'qnbpay-woocommerce')]);
+            wp_send_json(['status' => false, 'message' => __('Permission denied.', 'qnbpay-for-woocommerce')]);
         }
 
         $result = [
@@ -187,7 +187,7 @@ class Ajax
             !Arr::get($settings, 'merchant_id') || !Arr::get($settings, 'merchant_key') ||
             !Arr::get($settings, 'app_key') || !Arr::get($settings, 'app_secret')
         ) {
-            $result['message'] = __('The test function can be performed after saving the merchant information.', 'qnbpay-woocommerce');
+            $result['message'] = __('The test function can be performed after saving the merchant information.', 'qnbpay-for-woocommerce');
             wp_send_json($result);
         }
 

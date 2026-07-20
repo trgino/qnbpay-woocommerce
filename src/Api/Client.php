@@ -64,7 +64,7 @@ class Client
             'status' => false,
             'code' => 0,
             'body' => [],
-            'message' => __('Unexpected error occurred.', 'qnbpay-woocommerce'),
+            'message' => __('Unexpected error occurred.', 'qnbpay-for-woocommerce'),
         ];
     }
 
@@ -104,17 +104,17 @@ class Client
             $body = wp_remote_retrieve_body($remote);
 
             if ('' === $body || null === $body) {
-                $response['message'] = __('Cant get any results from payment agent.', 'qnbpay-woocommerce');
+                $response['message'] = __('Cant get any results from payment agent.', 'qnbpay-for-woocommerce');
 
                 return $response;
             }
 
             $response['body'] = $body;
             $response['status'] = true;
-            $response['message'] = __('Success', 'qnbpay-woocommerce');
+            $response['message'] = __('Success', 'qnbpay-for-woocommerce');
 
             if (200 !== $response['code']) {
-                $response['message'] = __('Cant connect to payment agent.', 'qnbpay-woocommerce');
+                $response['message'] = __('Cant connect to payment agent.', 'qnbpay-for-woocommerce');
             }
         } catch (\Throwable $e) {
             $response['message'] = $e->getMessage();
@@ -191,7 +191,7 @@ class Client
 
         $headers = $this->auth_headers();
         if (!$headers) {
-            $response['message'] = __('Cant get token from payment agent.', 'qnbpay-woocommerce');
+            $response['message'] = __('Cant get token from payment agent.', 'qnbpay-for-woocommerce');
 
             return $response;
         }
@@ -219,7 +219,7 @@ class Client
 
         $headers = $this->auth_headers();
         if (!$headers) {
-            $response['message'] = __('Cant get token from payment agent.', 'qnbpay-woocommerce');
+            $response['message'] = __('Cant get token from payment agent.', 'qnbpay-for-woocommerce');
 
             return $response;
         }
@@ -247,7 +247,7 @@ class Client
 
         $headers = $this->auth_headers();
         if (!$headers) {
-            $result['message'] = __('Cant get token from payment agent.', 'qnbpay-woocommerce');
+            $result['message'] = __('Cant get token from payment agent.', 'qnbpay-for-woocommerce');
 
             return $result;
         }
@@ -295,7 +295,7 @@ class Client
 
         $headers = $this->auth_headers();
         if (!$headers) {
-            $result['message'] = __('Cant get token from payment agent.', 'qnbpay-woocommerce');
+            $result['message'] = __('Cant get token from payment agent.', 'qnbpay-for-woocommerce');
 
             return $result;
         }
@@ -352,7 +352,7 @@ class Client
                     $response['body'] = Arr::get($decoded, 'data', []);
                 }
             } else {
-                $response['message'] = __('Cant get any results from payment agent.', 'qnbpay-woocommerce');
+                $response['message'] = __('Cant get any results from payment agent.', 'qnbpay-for-woocommerce');
             }
         }
 

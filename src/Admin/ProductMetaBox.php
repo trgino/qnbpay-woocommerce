@@ -52,7 +52,7 @@ class ProductMetaBox
 
         add_meta_box(
             'qnbpay_installment_limit',
-            __('Installment Limit', 'qnbpay-woocommerce'),
+            __('Installment Limit', 'qnbpay-for-woocommerce'),
             [$this, 'render'],
             'product',
             'side'
@@ -70,14 +70,14 @@ class ProductMetaBox
         wp_nonce_field('qnbpay_installment_limit', 'qnbpay_installment_limit_nonce');
         $limit = (int) get_post_meta($post->ID, '_limitInstallment', true);
         echo '<select name="_limitInstallment">';
-        echo '<option value="0">' . esc_html__('Default', 'qnbpay-woocommerce') . '</option>';
+        echo '<option value="0">' . esc_html__('Default', 'qnbpay-for-woocommerce') . '</option>';
         for ($i = 1; $i <= 12; $i++) {
             printf(
-                '<option value="%1$d"%2$s>%3$s</option>',
-                $i,
+                '<option value="%1$s"%2$s>%3$s</option>',
+                esc_attr((string) $i),
                 selected($limit, $i, false),
                 /* translators: %s: installment count */
-                esc_html(sprintf(__('%s Installment', 'qnbpay-woocommerce'), $i))
+                esc_html(sprintf(__('%s Installment', 'qnbpay-for-woocommerce'), $i))
             );
         }
         echo '</select>';

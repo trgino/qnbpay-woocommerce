@@ -33,7 +33,7 @@
      * Label component.
      */
     function Label() {
-        var title = decodeEntities(data.title || __('Credit Card', 'qnbpay-woocommerce'));
+        var title = decodeEntities(data.title || __('Credit Card', 'qnbpay-for-woocommerce'));
         return createElement('span', null, title);
     }
 
@@ -131,7 +131,7 @@
             : null;
 
         var testNotice = data.testmode
-            ? createElement('p', { className: 'qnbpay-blocks-testmode' }, __('TEST MODE ENABLED.', 'qnbpay-woocommerce'))
+            ? createElement('p', { className: 'qnbpay-blocks-testmode' }, __('TEST MODE ENABLED.', 'qnbpay-for-woocommerce'))
             : null;
 
         return createElement(Fragment, null,
@@ -139,14 +139,14 @@
             testNotice,
             createElement('div', { className: 'qnbpay-blocks-fields' },
                 createElement('p', { className: 'form-row form-row-wide' },
-                    createElement('label', null, __('Name On Card', 'qnbpay-woocommerce'), ' ', createElement('span', { className: 'required' }, '*')),
+                    createElement('label', null, __('Name On Card', 'qnbpay-for-woocommerce'), ' ', createElement('span', { className: 'required' }, '*')),
                     createElement('input', {
                         type: 'text', className: 'input-text', autoComplete: 'off',
                         value: holder, onChange: function (e) { setHolder(e.target.value); }
                     })
                 ),
                 createElement('p', { className: 'form-row form-row-wide' },
-                    createElement('label', null, __('Card Number', 'qnbpay-woocommerce'), ' ', createElement('span', { className: 'required' }, '*')),
+                    createElement('label', null, __('Card Number', 'qnbpay-for-woocommerce'), ' ', createElement('span', { className: 'required' }, '*')),
                     createElement('input', {
                         type: 'tel', inputMode: 'numeric', className: 'input-text', autoComplete: 'cc-number',
                         maxLength: 24, placeholder: '•••• •••• •••• ••••',
@@ -154,7 +154,7 @@
                     })
                 ),
                 createElement('p', { className: 'form-row form-row-first' },
-                    createElement('label', null, __('Expiry (MM/YY)', 'qnbpay-woocommerce'), ' ', createElement('span', { className: 'required' }, '*')),
+                    createElement('label', null, __('Expiry (MM/YY)', 'qnbpay-for-woocommerce'), ' ', createElement('span', { className: 'required' }, '*')),
                     createElement('input', {
                         type: 'tel', inputMode: 'numeric', className: 'input-text', autoComplete: 'cc-exp',
                         placeholder: 'MM / YY',
@@ -162,7 +162,7 @@
                     })
                 ),
                 createElement('p', { className: 'form-row form-row-last' },
-                    createElement('label', null, __('Card Code', 'qnbpay-woocommerce'), ' ', createElement('span', { className: 'required' }, '*')),
+                    createElement('label', null, __('Card Code', 'qnbpay-for-woocommerce'), ' ', createElement('span', { className: 'required' }, '*')),
                     createElement('input', {
                         type: 'tel', inputMode: 'numeric', className: 'input-text', autoComplete: 'off',
                         maxLength: 4, placeholder: 'CVC',

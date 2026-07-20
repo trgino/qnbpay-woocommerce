@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: QNBPay Payment Gateway for WooCommerce 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qnbpay-woocommerce\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/qnbpay-for-woocommerce\n"
 "Last-Translator: Cüneyt Çil <info@trgino.com>\n"
 "Language-Team: Turkish <LL@li.org>\n"
 "Language: tr_TR\n"
@@ -13,7 +13,7 @@ msgstr ""
 "POT-Creation-Date: 2025-05-04T16:28:23+00:00\n"
 "PO-Revision-Date: 2025-05-04 19:55+0300\n"
 "X-Generator: WP-CLI 2.11.0\n"
-"X-Domain: qnbpay-woocommerce\n"
+"X-Domain: qnbpay-for-woocommerce\n"
 
 #. Plugin Name of the plugin
 #: index.php

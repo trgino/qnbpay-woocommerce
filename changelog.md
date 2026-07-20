@@ -1,3 +1,9 @@
+#### 2.0.1
+- Renamed the plugin slug and text domain to `qnbpay-for-woocommerce` (WordPress.org naming compliance).
+- WordPress Plugin Check fixes: i18n translators comments, text-domain consistency, `$_GET`/`$_SERVER` sanitization, output escaping.
+- Removed unused card-brand images and dead CSS; fixed the BIN-lookup request race (stale AJAX requests are aborted + sequence-guarded).
+- Version is now derived from the plugin header (single source of truth) with a CI consistency guard.
+
 #### 2.0.0
 - Full rewrite: PSR-4 namespaced architecture with a dependency-free autoloader (removed rappasoft/laravel-helpers and its global `data_get()`).
 - HPOS (custom order tables) compatibility declared and used throughout.

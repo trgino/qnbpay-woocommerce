@@ -4,12 +4,12 @@
  * Plugin Name: QNBPay Payment Gateway for WooCommerce
  * Plugin URI: https://github.com/trgino/qnbpay-woocommerce
  * Description: QNBPay Payment gateway for WooCommerce. Credit card, installments, 3D Secure, refunds, HPOS and Checkout Blocks compatible.
- * Version: 2.0.0
+ * Version: 2.0.1
  * Author: Cüneyt Çil
  * Author URI: https://trgino.com/
  * License: GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: qnbpay-woocommerce
+ * Text Domain: qnbpay-for-woocommerce
  * Domain Path: /languages/
  * Requires at least: 5.6
  * Requires PHP: 7.4
@@ -38,7 +38,7 @@ unset($qnbpay_headers);
 
 define('QNBPAY_DIR', plugin_dir_path(QNBPAY_FILE));
 define('QNBPAY_URL', plugin_dir_url(QNBPAY_FILE));
-define('QNBPAY_DOMAIN', 'qnbpay-woocommerce');
+define('QNBPAY_DOMAIN', 'qnbpay-for-woocommerce');
 
 // Minimum requirements.
 define('QNBPAY_MIN_PHP', '7.4');

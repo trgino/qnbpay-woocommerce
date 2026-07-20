@@ -65,7 +65,7 @@ final class BlocksSupport extends AbstractPaymentMethodType
         );
 
         if (function_exists('wp_set_script_translations')) {
-            wp_set_script_translations($handle, 'qnbpay-woocommerce');
+            wp_set_script_translations($handle, 'qnbpay-for-woocommerce');
         }
 
         return [$handle];
@@ -79,7 +79,7 @@ final class BlocksSupport extends AbstractPaymentMethodType
     public function get_payment_method_data()
     {
         return [
-            'title' => Arr::str(Arr::get($this->gateway_settings, 'title', __('Credit Card', 'qnbpay-woocommerce'))),
+            'title' => Arr::str(Arr::get($this->gateway_settings, 'title', __('Credit Card', 'qnbpay-for-woocommerce'))),
             'description' => Arr::str(Arr::get($this->gateway_settings, 'description')),
             'testmode' => 'yes' === Arr::get($this->gateway_settings, 'testmode', 'no'),
             'installment' => 'yes' === Arr::get($this->gateway_settings, 'installment', 'yes'),
