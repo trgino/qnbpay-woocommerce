@@ -6,7 +6,7 @@ Tested up to: 7.0
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.4
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,10 @@ forwarded to QNBPay to complete the transaction. Use of QNBPay is subject to
 their terms and privacy policy: https://qnbpay.com.tr/
 
 == Changelog ==
+
+= 2.0.4 =
+* Markdown Formatting: Converted `readme.md` to pure GitHub Flavored Markdown format.
+* Release Automation & Tooling: Synchronized version bump scripts and GitHub Release workflows.
 
 = 2.0.3 =
 * Enterprise & Fail-Safe Hardening: Explicit error logging across all API calls, webhook handlers, AJAX routes and 3D endpoints.

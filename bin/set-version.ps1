@@ -19,7 +19,8 @@ php -r "
 \$ver = \$argv[1];
 \$targets = [
     ['index.php', '/(Version:\s*)[0-9][0-9.]*/'],
-    ['readme.txt', '/(Stable tag:\s*)[0-9][0-9.]*/']
+    ['readme.txt', '/(Stable tag:\s*)[0-9][0-9.]*/'],
+    ['readme.md', '/(version-)[0-9][0-9.]*/']
 ];
 foreach (\$targets as [\$file, \$pattern]) {
     \$content = file_get_contents(\$file);

@@ -1,3 +1,7 @@
+#### 2.0.4
+- Markdown Formatting: Converted `readme.md` to pure GitHub Flavored Markdown (removed raw HTML elements).
+- Release Automation & Tooling: Fully synchronized automated GitHub Release action workflow and version bump scripts.
+
 #### 2.0.3
 - Enterprise & Fail-Safe Hardening: Added explicit error logging across all API calls, webhook handlers, AJAX routes, and 3D endpoints so no errors or exceptions are swallowed silently.
 - Expanded Unit & Integration Test Suite: Added comprehensive unit test suites for `Client`, `Installments`, and `Reconciler`, plus expanded integration tests for WooCommerce refunds and failed payment transitions.
