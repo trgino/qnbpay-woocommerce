@@ -52,6 +52,7 @@ class Ajax
         $method = Arr::str(Arr::get($posted, 'method'));
 
         if (!wp_verify_nonce(Arr::str(Arr::get($posted, 'nonce')), 'qnbpay_ajax_nonce')) {
+            $this->plugin->logger()->error('ajax:' . $method, 'AJAX request rejected: invalid nonce token');
             wp_send_json([
                 'status' => false,
                 'retry' => true,

@@ -53,6 +53,7 @@
     "scripts": {
         "lint": "find . -path ./vendor -prune -o -name '*.php' -print0 | xargs -0 -n1 php -l",
         "phpstan": "phpstan analyse --no-progress",
-        "test": "phpunit"
+        "test": "phpunit",
+        "set-version": "bash bin/set-version.sh"
     }
 }

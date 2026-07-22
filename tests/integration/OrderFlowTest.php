@@ -104,4 +104,80 @@ class OrderFlowTest extends \WP_UnitTestCase
 
         $this->assertSame($order->get_id(), $store->resolve_order_id($invoice_id));
     }
+
+    public function test_process_refund_executes_refund_api(): void
+    {
+        add_filter('pre_http_request', function ($pre, $args, $url) {
+            if (strpos($url, '/token') !== false) {
+                return [
+                    'response' => ['code' => 200],
+                    'body' => wp_json_encode(['data' => ['token' => 'stub-token']]),
+                ];
+            }
+            if (strpos($url, '/refund') !== false) {
+                return [
+                    'response' => ['code' => 200],
+                    'body' => wp_json_encode([
+                        'status_code' => 100,
+                        'status_description' => 'Refund successful',
+                    ]),
+                ];
+            }
+
+            return $pre;
+        }, 10, 3);
+
+        $order = wc_create_order();
+        $order->set_payment_method('qnbpay');
+        $order->save();
+
+        $invoice_id = 'WC_' . $order->get_id() . '_REFUND123';
+        $order->update_meta_data(OrderStore::META_INVOICE, $invoice_id);
+        $order->save();
+
+        $gateway = new Gateway();
+        $refund_result = $gateway->process_refund($order->get_id(), 10.00, 'Customer requested refund');
+
+        $this->assertTrue($refund_result);
+    }
+
+    public function test_failed_checkstatus_marks_order_failed(): void
+    {
+        add_filter('pre_http_request', function ($pre, $args, $url) {
+            if (strpos($url, '/token') !== false) {
+                return [
+                    'response' => ['code' => 200],
+                    'body' => wp_json_encode(['data' => ['token' => 'stub-token']]),
+                ];
+            }
+            if (strpos($url, '/checkstatus') !== false) {
+                return [
+                    'response' => ['code' => 200],
+                    'body' => wp_json_encode([
+                        'status_code' => 102,
+                        'status_description' => 'Payment declined by bank',
+                    ]),
+                ];
+            }
+
+            return $pre;
+        }, 10, 3);
+
+        $order = wc_create_order();
+        $order->set_payment_method('qnbpay');
+        $order->update_status('pending');
+        $order->save();
+
+        $invoice_id = 'WC_' . $order->get_id() . '_FAIL123';
+        $order->update_meta_data(OrderStore::META_INVOICE, $invoice_id);
+        $order->save();
+
+        $gateway = new Gateway();
+        $result = $gateway->finalize_from_checkstatus($order, $invoice_id, 'test_fail', true);
+
+        $this->assertFalse($result);
+
+        $fresh = wc_get_order($order->get_id());
+        $this->assertSame('failed', $fresh->get_status());
+    }
 }

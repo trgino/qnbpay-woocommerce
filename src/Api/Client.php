@@ -158,6 +158,9 @@ class Client
 
                 return $token;
             }
+            $this->logger->error('token', 'Token payload missing data.token parameter: ' . wp_json_encode($decoded));
+        } else {
+            $this->logger->error('token', 'Failed to retrieve token: ' . $response['message']);
         }
 
         return false;
@@ -192,6 +195,7 @@ class Client
         $headers = $this->auth_headers();
         if (!$headers) {
             $response['message'] = __('Cant get token from payment agent.', 'qnbpay-for-woocommerce');
+            $this->logger->error('get_pos', 'Failed to obtain API token for BIN request');
 
             return $response;
         }
@@ -220,6 +224,7 @@ class Client
         $headers = $this->auth_headers();
         if (!$headers) {
             $response['message'] = __('Cant get token from payment agent.', 'qnbpay-for-woocommerce');
+            $this->logger->error('get_commissions', 'Failed to obtain API token for commissions request');
 
             return $response;
         }
@@ -248,6 +253,7 @@ class Client
         $headers = $this->auth_headers();
         if (!$headers) {
             $result['message'] = __('Cant get token from payment agent.', 'qnbpay-for-woocommerce');
+            $this->logger->error('check_status', 'Failed to obtain API token for invoice: ' . $invoice_id);
 
             return $result;
         }
@@ -296,6 +302,7 @@ class Client
         $headers = $this->auth_headers();
         if (!$headers) {
             $result['message'] = __('Cant get token from payment agent.', 'qnbpay-for-woocommerce');
+            $this->logger->error('refund', 'Failed to obtain API token for refund invoice: ' . $invoice_id);
 
             return $result;
         }

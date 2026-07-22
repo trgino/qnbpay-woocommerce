@@ -6,7 +6,7 @@ Tested up to: 7.0
 Requires PHP: 7.4
 WC requires at least: 6.0
 WC tested up to: 9.4
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,12 @@ forwarded to QNBPay to complete the transaction. Use of QNBPay is subject to
 their terms and privacy policy: https://qnbpay.com.tr/
 
 == Changelog ==
+
+= 2.0.3 =
+* Enterprise & Fail-Safe Hardening: Explicit error logging across all API calls, webhook handlers, AJAX routes and 3D endpoints.
+* Expanded Unit & Integration Test Suite: Added unit tests for Client, Installments and Reconciler, plus refund and failure integration tests.
+* GitHub Release Automation: Automated GitHub Action workflow for tag-triggered releases with clean ZIP distribution packaging.
+* Tooling: Cross-platform version management scripts (`bin/set-version.sh`, `bin/set-version.ps1`).
 
 = 2.0.2 =
 * WordPress Plugin Check compliance: "Tested up to" bumped, and the invoice-lookup query fully covered by phpcs (prepared-SQL).

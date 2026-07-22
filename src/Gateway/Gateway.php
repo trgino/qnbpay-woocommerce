@@ -820,6 +820,7 @@ class Gateway extends \WC_Payment_Gateway
         $get_key = isset($_GET['key']) ? sanitize_text_field(wp_unslash($_GET['key'])) : '';
         // phpcs:enable
         if (!$get_key || !hash_equals($this->get_webhook_hash(), $get_key)) {
+            $logger->error('webhook', 'Webhook rejection: invalid or missing security key');
             status_header(403);
             exit('Invalid key');
         }
@@ -836,35 +837,41 @@ class Gateway extends \WC_Payment_Gateway
 
         $received_hash = Arr::str(Arr::get($payload, 'hash_key'));
         if ('' === $received_hash) {
+            $logger->error('webhook', 'Webhook rejection: missing hash_key');
             status_header(400);
             exit('Missing hash_key');
         }
 
         $verified = $this->client()->verify_hash($received_hash);
         if (!$verified) {
+            $logger->error('webhook', 'Webhook rejection: invalid hash_key signature');
             status_header(403);
             exit('Invalid hash_key');
         }
 
         $invoice_id = Arr::str(Arr::get($payload, 'invoice_id', Arr::get($verified, 'invoiceId')));
         if ('' === $invoice_id) {
+            $logger->error('webhook', 'Webhook rejection: missing invoice_id');
             status_header(400);
             exit('Missing invoice_id');
         }
 
         $order_id = $orders->resolve_order_id($invoice_id);
         if (!$order_id) {
+            $logger->error('webhook', 'Webhook notification: order not found for invoice ' . $invoice_id);
             status_header(200);
             exit('Order not found');
         }
 
         $order = wc_get_order($order_id);
         if (!$order) {
+            $logger->error('webhook', 'Webhook notification: order object load failed for id ' . $order_id);
             status_header(200);
             exit('Order not found');
         }
 
         if ($order->has_status(wc_get_is_paid_statuses())) {
+            $logger->debug('webhook', 'Webhook skipped: order ' . $order_id . ' is already paid');
             status_header(200);
             exit('Already processed');
         }

@@ -116,6 +116,7 @@ class Endpoints
         // phpcs:enable
 
         if (!$order || !$key || !hash_equals($order->get_order_key(), $key) || '' === $token) {
+            $this->plugin->logger()->error('endpoint:render_form', sprintf('Invalid order, key or token for order_id: %d', $order_id));
             wp_safe_redirect(wc_get_checkout_url());
             exit;
         }
@@ -125,6 +126,7 @@ class Endpoints
         delete_transient('qnbpay_pay_' . $token);
 
         if (!is_array($stored) || (int) Arr::get($stored, 'order_id') !== $order_id || empty($stored['form'])) {
+            $this->plugin->logger()->error('endpoint:render_form', sprintf('Expired or missing transient form data for order_id: %d', $order_id));
             wp_safe_redirect($order->get_checkout_payment_url());
             exit;
         }
@@ -154,6 +156,7 @@ class Endpoints
         // phpcs:enable
 
         if (!$order || !$key || !hash_equals($order->get_order_key(), $key)) {
+            $this->plugin->logger()->error('endpoint:handle_result', sprintf('Invalid order or key parameter for order_id: %d', $order_id));
             wp_safe_redirect(wc_get_checkout_url());
             exit;
         }

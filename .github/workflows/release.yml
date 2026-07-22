@@ -1,0 +1,35 @@
+name: GitHub Release
+
+# Builds a clean distribution ZIP (excluding dev tooling via .distignore)
+# and creates a GitHub Release when a tag is pushed.
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build distribution package
+        run: |
+          mkdir -p dist/qnbpay-for-woocommerce
+          rsync -a --exclude-from=.distignore ./ dist/qnbpay-for-woocommerce/
+          cd dist
+          zip -r ../qnbpay-for-woocommerce.zip qnbpay-for-woocommerce
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: qnbpay-for-woocommerce.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false

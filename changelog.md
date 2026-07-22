@@ -1,3 +1,9 @@
+#### 2.0.3
+- Enterprise & Fail-Safe Hardening: Added explicit error logging across all API calls, webhook handlers, AJAX routes, and 3D endpoints so no errors or exceptions are swallowed silently.
+- Expanded Unit & Integration Test Suite: Added comprehensive unit test suites for `Client`, `Installments`, and `Reconciler`, plus expanded integration tests for WooCommerce refunds and failed payment transitions.
+- GitHub Release Automation: Added `.github/workflows/release.yml` GitHub Action to automatically build and attach clean distribution `.zip` packages on tag releases.
+- Tooling: Added cross-platform version bump scripts (`bin/set-version.sh`, `bin/set-version.ps1`, `composer set-version`).
+
 #### 2.0.2
 - WordPress Plugin Check compliance: "Tested up to" updated to the current WordPress release, and the invoice-lookup query is now fully covered by the phpcs prepared-SQL exemption.
 
